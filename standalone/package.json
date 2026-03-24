@@ -1,0 +1,47 @@
+{
+    "name": "tech4biss",
+    "version": "1.0.0",
+    "description": "Tech4Biss - Sistema Smart POS",
+    "main": "electron/main.js",
+    "scripts": {
+        "start": "electron .",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder",
+        "build:simple": "electron-packager . Tech4Biss --platform=win32 --arch=x64 --out=dist-simple --overwrite --prune=true --ignore=\"(frontend/src|frontend/public|frontend/node_modules|\\.git|\\.vscode|dist|cache)\""
+    },
+    "author": "DanielRodZa",
+    "license": "ISC",
+    "devDependencies": {
+        "electron": "^28.0.0",
+        "electron-builder": "^24.9.1",
+        "electron-packager": "^17.1.2",
+        "wait-on": "^7.2.0"
+    },
+    "dependencies": {
+        "tree-kill": "^1.2.2"
+    },
+    "build": {
+        "appId": "com.tech4biss.pos",
+        "productName": "Tech4Biss",
+        "files": [
+            "electron/**/*",
+            "frontend/build/**/*",
+            "!backend/**/*", 
+            "!**/*.pyc"
+        ],
+        "extraResources": [
+            {
+                "from": "backend/dist/backend",
+                "to": "backend",
+                "filter": ["**/*"]
+            }
+        ],
+        "directories": {
+            "buildResources": "assets"
+        },
+        "win": {
+            "target": "nsis",
+            "forceCodeSigning": false
+        }
+    }
+}

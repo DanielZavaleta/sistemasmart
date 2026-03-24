@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-family-primary: 'Nunito', sans-serif;
+  --font-family-secondary: "Poppins", sans-serif;
+
+  --color-primary: #FE9F43;
+  --color-primary-hover: #fe8d1f;
+  --color-secondary: #092C4C;
+  --color-secondary-hover: #051a2c;
+  --color-success: #3EB780;
+  --color-info: #155EEF;
+  --color-warning: #FFCA18;
+  --color-danger: #FF0000;
+
+  --color-gray-900: #212B36;
+  --color-gray-800: #37404A;
+  --color-gray-700: #4D555E;
+  --color-gray-600: #646B72;
+  --color-gray-500: #7A8086;
+  --color-gray-400: #90959B;
+
+  --topbar-bg: #ffffff;
+  --sidebar-bg: #ffffff;
+  --sidebar-menu-item: #646B72;
+  --sidebar-menu-item-active: #FE9F43;
+  --sidebar-menu-item-hover: #212B36;
+  --sidebar-menu-item-bg-active: #FFF6EE;
+
+  --color-border-color: #E6EAED;
+}
+
+body {
+  font-family: var(--font-family-primary);
+  background-color: #F9FAFB;
+  color: #646B72;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-gray-900);
+  font-weight: 700;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FE9F43;
+  border-radius: 20px;
+}
+
+/* --- Estilos de Impresión --- */
+@media print {
+
+  /* Oculta todo por defecto */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Muestra solo el contenedor del recibo y su contenido */
+  .printable-receipt,
+  .printable-receipt * {
+    visibility: visible;
+  }
+
+  /* Asegura que el recibo ocupe toda la página de impresión */
+  .printable-receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Oculta los botones dentro del modal al imprimir */
+  .no-print,
+  .no-print * {
+    display: none !important;
+  }
+}
