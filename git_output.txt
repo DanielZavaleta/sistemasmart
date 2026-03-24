@@ -1,0 +1,200 @@
+--- Git Status Porcelain ---
+ M standalone/backend/src/api/models.py
+ M standalone/backend/src/api/serializers.py
+ M standalone/backend/src/api/tests.py
+ M standalone/backend/src/api/urls.py
+ M standalone/backend/src/api/views.py
+ M standalone/electron/main.js
+ M standalone/frontend/src/App.js
+ M standalone/frontend/src/components/Layout/Header.js
+ M standalone/frontend/src/components/Layout/PosLayout.js
+ M standalone/frontend/src/components/Layout/Sidebar.js
+ M standalone/frontend/src/components/auth/LoginForm.js
+ M standalone/frontend/src/components/modals/ClientSearchModal.js
+ M standalone/frontend/src/components/modals/PaymentModal.js
+ M standalone/frontend/src/components/modals/RetiroModal.js
+ M standalone/frontend/src/components/shared/PrintableArqueo.js
+ M standalone/frontend/src/components/shared/PrintableReceipt.js
+ M standalone/frontend/src/pages/dashboard/Dashboard.js
+ M standalone/frontend/src/pages/inventory/CaducidadReport.js
+ M standalone/frontend/src/pages/inventory/CategoriaManagement.js
+ M standalone/frontend/src/pages/inventory/EntradaStock.js
+ M standalone/frontend/src/pages/inventory/ProductoManagement.js
+ M standalone/frontend/src/pages/inventory/ReporteExistencias.js
+ M standalone/frontend/src/pages/people/ClienteManagement.js
+ M standalone/frontend/src/pages/people/ProveedorManagement.js
+ M standalone/frontend/src/pages/people/UserManagement.js
+ M standalone/frontend/src/pages/purchases/OrdenCompra.js
+ M standalone/frontend/src/pages/purchases/ProveedorPagos.js
+ M standalone/frontend/src/pages/sales/ArqueoCaja.js
+ M standalone/frontend/src/pages/sales/ClienteAbonos.js
+ M standalone/frontend/src/pages/sales/CorteCaja.js
+ M standalone/frontend/src/pages/sales/RecargaView.js
+ M standalone/frontend/src/pages/sales/ReporteVentas.js
+ M standalone/frontend/src/pages/settings/Configuracion.js
+ M standalone/frontend/src/pages/settings/ConfigurarDescuentos.js
+ M standalone/frontend/src/pages/settings/Perfil.js
+ M standalone/frontend/src/pages/transferencias/TransferenciaForm.js
+ M standalone/frontend/src/services/apiService.js
+ D standalone/staging/backend/create_admin.py
+ D standalone/staging/backend/requirements.txt
+ D standalone/staging/backend/src/api/__init__.py
+ D standalone/staging/backend/src/api/admin.py
+ D standalone/staging/backend/src/api/apps.py
+ D standalone/staging/backend/src/api/management/__init__.py
+ D standalone/staging/backend/src/api/management/commands/__init__.py
+ D standalone/staging/backend/src/api/management/commands/backup_db.py
+ D standalone/staging/backend/src/api/migrations/0001_initial.py
+ D standalone/staging/backend/src/api/migrations/0002_familia_subfamilia_producto_subfamilia.py
+ D standalone/staging/backend/src/api/migrations/0003_cliente.py
+ D standalone/staging/backend/src/api/migrations/0004_proveedor.py
+ D standalone/staging/backend/src/api/migrations/0005_venta_ventaitem_ventapago.py
+ D standalone/staging/backend/src/api/migrations/0006_entradastock_entradastockitem.py
+ D standalone/staging/backend/src/api/migrations/0007_ajustestock.py
+ D standalone/staging/backend/src/api/migrations/0008_entradastockitem_fecha_caducidad_and_more.py
+ D standalone/staging/backend/src/api/migrations/0009_ordencompra_ordencompraitem.py
+ D standalone/staging/backend/src/api/migrations/0010_pagoproveedor.py
+ D standalone/staging/backend/src/api/migrations/0011_cliente_saldo_actual_movimientocliente.py
+ D standalone/staging/backend/src/api/migrations/0012_cortecaja.py
+ D standalone/staging/backend/src/api/migrations/0013_cortecaja_tipo.py
+ D standalone/staging/backend/src/api/migrations/0014_producto_permite_descuento_and_more.py
+ D standalone/staging/backend/src/api/migrations/0015_producto_fecha_caducidad.py
+ D standalone/staging/backend/src/api/migrations/0016_sucursal_entradastock_factura_entradastock_tipo_and_more.py
+ D standalone/staging/backend/src/api/migrations/0017_cortecaja_detalles.py
+ D standalone/staging/backend/src/api/migrations/0018_producto_clave_sat_producto_and_more.py
+ D standalone/staging/backend/src/api/migrations/0019_producto_es_paquete_productocomponente.py
+ D standalone/staging/backend/src/api/migrations/0020_cliente_limite_credito_ticketsuspendido.py
+ D standalone/staging/backend/src/api/migrations/0021_entradastockitem_cantidad_disponible.py
+ D standalone/staging/backend/src/api/migrations/0022_ventapago_tipo_cambio_alter_ventapago_metodo_and_more.py
+ D standalone/staging/backend/src/api/migrations/0023_configuracion_remove_cliente_direccion_fiscal_and_more.py
+ D standalone/staging/backend/src/api/migrations/0024_descuento_cliente_descuento.py
+ D standalone/staging/backend/src/api/migrations/__init__.py
+ D standalone/staging/backend/src/api/models.py
+ D standalone/staging/backend/src/api/serializers.py
+ D standalone/staging/backend/src/api/tests.py
+ D standalone/staging/backend/src/api/urls.py
+ D standalone/staging/backend/src/api/views.py
+ D standalone/staging/backend/src/config/__init__.py
+ D standalone/staging/backend/src/config/asgi.py
+ D standalone/staging/backend/src/config/settings.py
+ D standalone/staging/backend/src/config/urls.py
+ D standalone/staging/backend/src/config/wsgi.py
+ D standalone/staging/backend/src/manage.py
+ D standalone/staging/backend/src/populate_db.py
+ D standalone/staging/electron/main.js
+ D standalone/staging/electron/preload.js
+ D standalone/staging/package-lock.json
+ D standalone/staging/package.json
+?? git_output.txt
+?? standalone/backend/src/api/migrations/0029_ajustestock_sucursal_cortecaja_sucursal_and_more.py
+?? standalone/backend/src/api/permissions.py
+?? standalone/backend/src/check_db.py
+?? standalone/backend/src/fix_sucursal.py
+?? standalone/backend/src/test_ajustes.py
+?? standalone/backend/src/test_reporte.py
+?? standalone/backend/src/test_serialization.py
+?? standalone/backend/test_output.txt
+?? standalone/backend/test_output2.txt
+?? standalone/build_log.txt
+?? standalone/frontend/public/Tech4Biss.png
+?? standalone/frontend/src/fix_visuals.py
+?? standalone/frontend/src/fix_visuals_roles_existencias.py
+?? standalone/frontend/src/fix_visuals_round2.py
+?? standalone/frontend/src/pages/people/RoleManagement.js
+?? standalone/git_changes.py
+?? standalone/read_log.py
+
+
+--- Git Diff Stat ---
+ standalone/backend/src/api/models.py               |    5 +
+ standalone/backend/src/api/serializers.py          |   70 +-
+ standalone/backend/src/api/tests.py                |  278 +-
+ standalone/backend/src/api/urls.py                 |    3 +-
+ standalone/backend/src/api/views.py                |  103 +-
+ standalone/electron/main.js                        |    2 +-
+ standalone/frontend/src/App.js                     |    7 +-
+ .../frontend/src/components/Layout/Header.js       |   13 +-
+ .../frontend/src/components/Layout/PosLayout.js    |    2 +-
+ .../frontend/src/components/Layout/Sidebar.js      |  127 +-
+ .../frontend/src/components/auth/LoginForm.js      |   19 +-
+ .../src/components/modals/ClientSearchModal.js     |   10 +-
+ .../frontend/src/components/modals/PaymentModal.js |   12 +-
+ .../frontend/src/components/modals/RetiroModal.js  |    2 +-
+ .../src/components/shared/PrintableArqueo.js       |    2 +-
+ .../src/components/shared/PrintableReceipt.js      |    2 +-
+ .../frontend/src/pages/dashboard/Dashboard.js      |    8 +-
+ .../src/pages/inventory/CaducidadReport.js         |   20 +-
+ .../src/pages/inventory/CategoriaManagement.js     |   22 +-
+ .../frontend/src/pages/inventory/EntradaStock.js   |   60 +-
+ .../src/pages/inventory/ProductoManagement.js      |   64 +-
+ .../src/pages/inventory/ReporteExistencias.js      |   64 +-
+ .../frontend/src/pages/people/ClienteManagement.js |   14 +-
+ .../src/pages/people/ProveedorManagement.js        |   10 +-
+ .../frontend/src/pages/people/UserManagement.js    |   65 +-
+ .../frontend/src/pages/purchases/OrdenCompra.js    |   32 +-
+ .../frontend/src/pages/purchases/ProveedorPagos.js |   18 +-
+ standalone/frontend/src/pages/sales/ArqueoCaja.js  |    2 +-
+ .../frontend/src/pages/sales/ClienteAbonos.js      |   36 +-
+ standalone/frontend/src/pages/sales/CorteCaja.js   |   46 +-
+ standalone/frontend/src/pages/sales/RecargaView.js |   10 +-
+ .../frontend/src/pages/sales/ReporteVentas.js      |   50 +-
+ .../frontend/src/pages/settings/Configuracion.js   |    2 +-
+ .../src/pages/settings/ConfigurarDescuentos.js     |   14 +-
+ standalone/frontend/src/pages/settings/Perfil.js   |   10 +-
+ .../src/pages/transferencias/TransferenciaForm.js  |   18 +-
+ standalone/frontend/src/services/apiService.js     |    4 +
+ standalone/staging/backend/create_admin.py         |   28 -
+ standalone/staging/backend/requirements.txt        |    8 -
+ standalone/staging/backend/src/api/__init__.py     |    0
+ standalone/staging/backend/src/api/admin.py        |   76 -
+ standalone/staging/backend/src/api/apps.py         |    6 -
+ .../staging/backend/src/api/management/__init__.py |    1 -
+ .../src/api/management/commands/__init__.py        |    1 -
+ .../src/api/management/commands/backup_db.py       |   68 -
+ .../backend/src/api/migrations/0001_initial.py     |   32 -
+ .../0002_familia_subfamilia_producto_subfamilia.py |   37 -
+ .../backend/src/api/migrations/0003_cliente.py     |   27 -
+ .../backend/src/api/migrations/0004_proveedor.py   |   26 -
+ .../migrations/0005_venta_ventaitem_ventapago.py   |   46 -
+ .../0006_entradastock_entradastockitem.py          |   37 -
+ .../backend/src/api/migrations/0007_ajustestock.py |   29 -
+ ...08_entradastockitem_fecha_caducidad_and_more.py |   23 -
+ .../migrations/0009_ordencompra_ordencompraitem.py |   39 -
+ .../src/api/migrations/0010_pagoproveedor.py       |   30 -
+ .../0011_cliente_saldo_actual_movimientocliente.py |   31 -
+ .../backend/src/api/migrations/0012_cortecaja.py   |   31 -
+ .../src/api/migrations/0013_cortecaja_tipo.py      |   18 -
+ .../0014_producto_permite_descuento_and_more.py    |   38 -
+ .../migrations/0015_producto_fecha_caducidad.py    |   18 -
+ ...radastock_factura_entradastock_tipo_and_more.py |   52 -
+ .../src/api/migrations/0017_cortecaja_detalles.py  |   18 -
+ .../0018_producto_clave_sat_producto_and_more.py   |   38 -
+ .../0019_producto_es_paquete_productocomponente.py |   31 -
+ ...0020_cliente_limite_credito_ticketsuspendido.py |   31 -
+ .../0021_entradastockitem_cantidad_disponible.py   |   18 -
+ ..._tipo_cambio_alter_ventapago_metodo_and_more.py |   36 -
+ ...ion_remove_cliente_direccion_fiscal_and_more.py |   89 -
+ .../migrations/0024_descuento_cliente_descuento.py |   27 -
+ .../staging/backend/src/api/migrations/__init__.py |    0
+ standalone/staging/backend/src/api/models.py       |  340 --
+ standalone/staging/backend/src/api/serializers.py  |  433 --
+ standalone/staging/backend/src/api/tests.py        |    3 -
+ standalone/staging/backend/src/api/urls.py         |   59 -
+ standalone/staging/backend/src/api/views.py        |  655 ---
+ standalone/staging/backend/src/config/__init__.py  |    0
+ standalone/staging/backend/src/config/asgi.py      |   16 -
+ standalone/staging/backend/src/config/settings.py  |  143 -
+ standalone/staging/backend/src/config/urls.py      |    8 -
+ standalone/staging/backend/src/config/wsgi.py      |   16 -
+ standalone/staging/backend/src/manage.py           |   23 -
+ standalone/staging/backend/src/populate_db.py      |  205 -
+ standalone/staging/electron/main.js                |  157 -
+ standalone/staging/electron/preload.js             |    5 -
+ standalone/staging/package-lock.json               | 5002 --------------------
+ standalone/staging/package.json                    |   41 -
+ 86 files changed, 820 insertions(+), 8502 deletions(-)
+
+Stderr (Diff):
+warning: in the working copy of 'standalone/backend/src/api/tests.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'standalone/frontend/src/components/Layout/Sidebar.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'standalone/frontend/src/components/auth/LoginForm.js', LF will be replaced by CRLF the next time Git touches it
