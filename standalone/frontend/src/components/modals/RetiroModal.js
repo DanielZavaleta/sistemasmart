@@ -48,7 +48,7 @@ const RetiroModal = ({ onClose, onSuccess }) => {
                     <div className="mb-4">
                         <label className="block text-sm font-bold text-gray-700 mb-2">Monto a Retirar</label>
                         <div className="relative">
-                            <span className="absolute left-3 top-3 text-gray-500 font-bold">$</span>
+                            <span className="absolute left-3 top-3 text-gray-700 font-bold">$</span>
                             <input
                                 type="number"
                                 value={monto}

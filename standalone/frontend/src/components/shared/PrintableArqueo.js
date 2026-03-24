@@ -91,7 +91,7 @@ const PrintableArqueo = ({ data }) => {
                     <span>Total Efectivo:</span>
                     <span>${parseFloat(total_caja_teorico).toFixed(2)}</span>
                 </div>
-                <p className="text-center text-xs text-gray-500 mt-1">(Teórico en Sistema)</p>
+                <p className="text-center text-xs text-gray-700 mt-1">(Teórico en Sistema)</p>
             </div>
 
             {/* Firmas */}

@@ -164,7 +164,7 @@ app.on('window-all-closed', function () {
 });
 
 app.on('will-quit', () => {
-    if (djangoProcess) {
+    if (djangoProcess && djangoProcess.pid) {
         console.log('Killing Django process...');
         treeKill(djangoProcess.pid);
     }

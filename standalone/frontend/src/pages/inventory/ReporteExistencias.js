@@ -94,7 +94,7 @@ const ReporteExistencias = () => {
         }
     };
 
-    const isManager = currentUser && (currentUser.is_superuser || currentUser.is_staff || currentUser.groups.some(g => ['Administrador', 'Gerente', 'Manager'].includes(g.name)));
+    const isManager = currentUser && (currentUser.is_superuser || currentUser.is_staff || currentUser.groups?.some(g => ['Administrador', 'Gerente', 'Manager'].includes(g.name)));
 
     const productosFiltrados = reporte?.productos.filter(p =>
         p.descripcion.toLowerCase().includes(filtro.toLowerCase()) ||
@@ -105,7 +105,7 @@ const ReporteExistencias = () => {
     if (error) return <div className="text-red-500 p-4">{error}</div>;
 
     return (
-        <div className="w-full max-w-6xl p-4">
+        <div className="w-full max-w-6xl p-4 printable-receipt">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-3xl font-bold text-gray-800">Existencias e Inventario Físico</h2>
                 <div className="flex gap-2">
@@ -123,7 +123,7 @@ const ReporteExistencias = () => {
                    
                     <button
                         onClick={handlePrint}
-                        className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded flex items-center"
+                        className="bg-gray-700 hover:bg-gray-50 border border-gray-100 text-white hover:text-gray-800 px-4 py-2 rounded flex items-center transition-colors"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -136,17 +136,17 @@ const ReporteExistencias = () => {
             {/* Resumen - Solo para Managers */}
             {isManager && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div className="bg-gray-800 p-6 rounded-lg border-l-4 border-green-500 shadow-lg">
-                        <p className="text-gray-400 text-sm uppercase tracking-wider">Valor Total del Inventario</p>
-                        <p className="text-4xl font-bold text-white mt-2">
+                    <div className="bg-white border border-gray-200 shadow-md p-6 rounded-lg border-l-4 border-green-500 shadow-lg">
+                        <p className="text-gray-600 text-sm uppercase tracking-wider">Valor Total del Inventario</p>
+                        <p className="text-4xl font-bold text-green-600 mt-2">
                             ${reporte.valor_total_inventario.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                         </p>
-                        <p className="text-xs text-gray-500 mt-1">Costo * Stock Actual</p>
+                        <p className="text-xs text-gray-700 mt-1">Costo * Stock Actual</p>
                     </div>
-                    <div className="bg-gray-800 p-6 rounded-lg border-l-4 border-cyan-500 shadow-lg">
-                        <p className="text-gray-400 text-sm uppercase tracking-wider">Total de Productos</p>
-                        <p className="text-4xl font-bold text-white mt-2">{reporte.total_productos}</p>
-                        <p className="text-xs text-gray-500 mt-1">Items registrados en catálogo</p>
+                    <div className="bg-white border border-gray-200 shadow-md p-6 rounded-lg border-l-4 border-cyan-500 shadow-lg">
+                        <p className="text-gray-600 text-sm uppercase tracking-wider">Total de Productos</p>
+                        <p className="text-4xl font-bold text-cyan-600 mt-2">{reporte.total_productos}</p>
+                        <p className="text-xs text-gray-700 mt-1">Items registrados en catálogo</p>
                     </div>
                 </div>
             )}
@@ -158,15 +158,15 @@ const ReporteExistencias = () => {
                     placeholder="Buscar por código o descripción..."
                     value={filtro}
                     onChange={(e) => setFiltro(e.target.value)}
-                    className="w-full p-3 bg-gray-800 text-white rounded border border-gray-700 focus:border-cyan-500 outline-none"
+                    className="w-full p-3 bg-white border border-gray-200 shadow-md text-gray-800 rounded border border-gray-200 focus:border-cyan-500 outline-none"
                 />
             </div>
 
             {/* Tabla Principal */}
-            <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-8">
+            <div className="bg-white border border-gray-200 shadow-md rounded-lg shadow-lg overflow-hidden mb-8">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left text-gray-400">
-                        <thead className="bg-gray-900 text-gray-500 uppercase text-xs">
+                    <table className="w-full text-left text-gray-600">
+                        <thead className="bg-gray-50 text-gray-700 uppercase text-xs">
                             <tr>
                                 <th className="p-4">Código</th>
                                 <th className="p-4">Descripción</th>
@@ -178,27 +178,27 @@ const ReporteExistencias = () => {
                                 <th className="p-4">Acción</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-700">
+                        <tbody className="divide-y divide-gray-200">
                             {productosFiltrados.map((prod) => (
-                                <tr key={prod.id} className="hover:bg-gray-700 transition-colors">
-                                    <td className="p-4 font-mono text-sm text-cyan-400">{prod.codigo_barras}</td>
-                                    <td className="p-4 text-white">{prod.descripcion}</td>
+                                <tr key={prod.id} className="hover:bg-gray-100 transition-colors">
+                                    <td className="p-4 font-mono text-sm text-cyan-600">{prod.codigo_barras}</td>
+                                    <td className="p-4 text-gray-800">{prod.descripcion}</td>
                                     <td className="p-4 text-sm">{prod.familia}</td>
                                     {isManager && (
-                                        <td className={`p-4 text-center font-bold ${prod.stock_actual <= 0 ? 'text-red-500' : 'text-white'}`}>
+                                        <td className={`p-4 text-center font-bold ${prod.stock_actual <= 0 ? 'text-red-500' : 'text-gray-800'}`}>
                                             {prod.stock_actual}
                                         </td>
                                     )}
                                     {isManager && <td className="p-4 text-right text-sm">${prod.costo}</td>}
                                     {isManager && (
-                                        <td className="p-4 text-right font-bold text-green-400">
+                                        <td className="p-4 text-right font-bold text-green-600">
                                             ${prod.valor_stock.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                                         </td>
                                     )}
-                                    <td className="p-4 text-center bg-gray-750">
+                                    <td className="p-4 text-center bg-gray-50 border border-gray-100">
                                         <input
                                             type="number"
-                                            className="w-24 p-2 bg-gray-600 text-white rounded border border-gray-500 focus:border-cyan-500 text-center"
+                                            className="w-24 p-2 bg-gray-50 border border-gray-100 text-gray-800 rounded border border-gray-500 focus:border-cyan-500 text-center"
                                             placeholder="#"
                                             value={conteos[prod.id] !== undefined ? conteos[prod.id] : ''}
                                             onChange={(e) => handleConteoChange(prod.id, e.target.value)}
@@ -224,7 +224,7 @@ const ReporteExistencias = () => {
                             ))}
                             {productosFiltrados.length === 0 && (
                                 <tr>
-                                    <td colSpan="8" className="p-8 text-center text-gray-500">No se encontraron productos.</td>
+                                    <td colSpan="8" className="p-8 text-center text-gray-700">No se encontraron productos.</td>
                                 </tr>
                             )}
                         </tbody>
@@ -235,10 +235,10 @@ const ReporteExistencias = () => {
             {/* Historial de Ajustes */}
             {isManager && (
                 <div className="mt-8">
-                     <h3 className="text-xl font-bold text-white mb-4">Historial Reciente de Ajustes</h3>
-                     <div className="bg-gray-800 rounded shadow-md overflow-x-auto">
-                        <table className="min-w-full text-left text-gray-400">
-                        <thead className="bg-gray-900 text-xs uppercase">
+                     <h3 className="text-xl font-bold text-gray-800 mb-4">Historial Reciente de Ajustes</h3>
+                     <div className="bg-white border border-gray-200 shadow-md rounded shadow-md overflow-x-auto">
+                        <table className="min-w-full text-left text-gray-600">
+                        <thead className="bg-gray-50 text-xs uppercase">
                             <tr>
                             <th className="p-4">Fecha</th>
                             <th className="p-4">Producto</th>
@@ -250,18 +250,18 @@ const ReporteExistencias = () => {
                         </thead>
                         <tbody>
                             {ajustes.map(a => (
-                            <tr key={a.id} className="border-b border-gray-700 hover:bg-gray-700">
+                            <tr key={a.id} className="border-b border-gray-200 hover:bg-gray-100">
                                 <td className="p-4 text-sm">{new Date(a.fecha).toLocaleString()}</td>
-                                <td className="p-4 text-white">{a.producto_nombre}</td>
+                                 <td className="p-4 text-gray-800">{a.producto_nombre}</td>
                                 <td className="p-4 text-sm">{a.usuario_username}</td>
                                 <td className="p-4 text-sm">{a.cantidad_anterior}</td>
-                                <td className="p-4 font-bold text-yellow-400">{a.cantidad_nueva}</td>
+                                 <td className="p-4 font-bold text-yellow-600">{a.cantidad_nueva}</td>
                                 <td className="p-4 text-sm italic">{a.notas}</td>
                             </tr>
                             ))}
                              {ajustes.length === 0 && (
                                 <tr>
-                                    <td colSpan="6" className="p-8 text-center text-gray-500">No hay ajustes recientes.</td>
+                                    <td colSpan="6" className="p-8 text-center text-gray-700">No hay ajustes recientes.</td>
                                 </tr>
                             )}
                         </tbody>

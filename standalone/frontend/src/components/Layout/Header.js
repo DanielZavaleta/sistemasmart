@@ -18,7 +18,7 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
                 </button>
 
                 <div className="hidden md:flex items-center bg-gray-50 rounded-full px-4 py-1.5 border border-gray-200 w-[300px]">
-                    <IconSearch size={18} className="text-gray-400 mr-2" />
+                    <IconSearch size={18} className="text-gray-600 mr-2" />
                     <input
                         type="text"
                         placeholder="Buscar productos, clientes..."
@@ -42,11 +42,20 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
                     <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
                 </button>
 
+                {/* Logout Button */}
+                <button 
+                    onClick={() => { localStorage.clear(); window.location.reload(); }} 
+                    className="p-1.5 rounded-full hover:bg-red-50 text-red-500 transition-colors"
+                    title="Cerrar Sesión"
+                >
+                    <IconLogout size={22} />
+                </button>
+
                 {/* Profile Dropdown */}
                 <div className="flex items-center gap-3 pl-4 border-l border-gray-200 cursor-pointer">
                     <div className="text-right hidden md:block">
                         <p className="text-sm font-bold text-gray-800 leading-tight">Admin</p>
-                        <p className="text-[11px] text-gray-500">Super Admin</p>
+                        <p className="text-[11px] text-gray-700">Super Admin</p>
                     </div>
                     <img
                         src="/assets/img/profiles/avator1.jpg"

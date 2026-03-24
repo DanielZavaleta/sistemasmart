@@ -93,7 +93,7 @@ const ProveedorPagos = () => {
                     + Registrar Nuevo Pago
                 </button>
             ) : (
-                <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg mb-6 text-gray-300">
+                <form onSubmit={handleSubmit} className="bg-white border border-gray-200 shadow-md p-6 rounded-lg mb-6 text-gray-700">
                     <h3 className="text-xl text-white mb-4">Registrar Pago</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -178,7 +178,7 @@ const ProveedorPagos = () => {
                         <button
                             type="button"
                             onClick={() => { setShowForm(false); resetForm(); }}
-                            className="bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded"
+                            className="bg-gray-50 border border-gray-100 hover:bg-gray-500 text-gray-800 py-2 px-4 rounded"
                         >
                             Cancelar
                         </button>
@@ -192,12 +192,12 @@ const ProveedorPagos = () => {
                 </form>
             )}
 
-            <div className="bg-gray-800 rounded shadow-md overflow-x-auto">
+            <div className="bg-white border border-gray-200 shadow-md rounded shadow-md overflow-x-auto">
                 <h3 className="text-xl text-white p-4">Historial de Pagos</h3>
-                {isLoading ? <p className="p-4 text-gray-400">Cargando...</p> : (
-                    <table className="min-w-full text-left text-gray-300">
+                {isLoading ? <p className="p-4 text-gray-600">Cargando...</p> : (
+                    <table className="min-w-full text-left text-gray-700">
                         <thead>
-                            <tr className="border-b border-gray-700 bg-gray-900">
+                            <tr className="border-b border-gray-200 bg-gray-50">
                                 <th className="p-4">ID</th>
                                 <th className="p-4">Fecha</th>
                                 <th className="p-4">Proveedor</th>
@@ -209,19 +209,19 @@ const ProveedorPagos = () => {
                         </thead>
                         <tbody>
                             {pagos.map(p => (
-                                <tr key={p.id} className="border-b border-gray-700 hover:bg-gray-700">
+                                <tr key={p.id} className="border-b border-gray-200 hover:bg-gray-100">
                                     <td className="p-4">{p.id}</td>
                                     <td className="p-4">{new Date(p.fecha).toLocaleDateString()}</td>
                                     <td className="p-4">{p.proveedor_nombre}</td>
                                     <td className="p-4 font-bold text-green-400">${p.monto}</td>
                                     <td className="p-4 capitalize">{p.metodo}</td>
                                     <td className="p-4">{p.orden_compra ? `OC-${p.orden_compra}` : '-'}</td>
-                                    <td className="p-4 text-sm text-gray-500">{p.usuario_username}</td>
+                                    <td className="p-4 text-sm text-gray-700">{p.usuario_username}</td>
                                 </tr>
                             ))}
                             {pagos.length === 0 && (
                                 <tr>
-                                    <td colSpan="7" className="p-4 text-center text-gray-500">No hay pagos registrados.</td>
+                                    <td colSpan="7" className="p-4 text-center text-gray-700">No hay pagos registrados.</td>
                                 </tr>
                             )}
                         </tbody>

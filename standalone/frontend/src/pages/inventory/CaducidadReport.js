@@ -38,30 +38,30 @@ const CaducidadReport = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-bold text-gray-800">Alertas de Caducidad</h2>
         <div className="flex items-center">
-          <label htmlFor="days" className="mr-2 text-gray-300">Alertar a:</label>
+          <label htmlFor="days" className="mr-2 text-gray-700">Alertar a:</label>
           <input
             id="days"
             type="number"
             value={days}
             onChange={(e) => setDays(e.target.value)}
-            className="p-2 bg-gray-700 rounded w-24"
+            className="p-2 bg-white border border-gray-200 text-gray-800 rounded w-24 focus:ring-1 focus:ring-cyan-500 outline-none"
           />
-          <span className="ml-2 text-gray-300">días</span>
+          <span className="ml-2 text-gray-700">días</span>
         </div>
       </div>
 
       {error && <p className="text-red-500 bg-red-200 p-2 rounded mb-4">{error}</p>}
 
-      <div className="bg-gray-800 rounded shadow-md overflow-x-auto">
-        {isLoading && <p className="p-4 text-gray-400">Cargando reporte...</p>}
+      <div className="bg-white border border-gray-200 shadow-md rounded shadow-md overflow-x-auto">
+        {isLoading && <p className="p-4 text-gray-600">Cargando reporte...</p>}
         {!isLoading && items.length === 0 && (
-          <p className="p-4 text-green-400">¡Excelente! No hay productos próximos a caducar en los siguientes {days} días.</p>
+          <p className="p-4 text-green-700 font-medium">¡Excelente! No hay productos próximos a caducar en los siguientes {days} días.</p>
         )}
 
         {items.length > 0 && (
           <table className="min-w-full text-left">
             <thead>
-              <tr className="border-b border-gray-700">
+              <tr className="border-b border-gray-200">
                 <th className="p-4">Fecha Caducidad</th>
                 <th className="p-4">Producto</th>
                 <th className="p-4">Código</th>
@@ -77,11 +77,11 @@ const CaducidadReport = () => {
                 return (
                   <tr
                     key={item.id}
-                    className={`border-b border-gray-700 ${isExpired ? 'bg-red-900 hover:bg-red-800' : 'hover:bg-gray-700'}`}
+                    className={`border-b border-gray-200 ${isExpired ? 'bg-red-50 text-red-800 hover:bg-red-100' : 'hover:bg-gray-100'}`}
                   >
                     <td className="p-4 font-bold">
-                      {isExpired && <AlertIcon className="inline text-red-400" />}
-                      <span className={isExpired ? 'text-red-400' : 'text-yellow-400'}>
+                      {isExpired && <AlertIcon className="inline text-red-600" />}
+                      <span className={isExpired ? 'text-red-600 font-bold' : 'text-yellow-600'}>
                         {item.fecha_caducidad}
                       </span>
                     </td>

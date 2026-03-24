@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { getUsers, createUser, updateUser, deleteUser, getSucursales } from '../../services/apiService';
+import { getUsers, createUser, updateUser, deleteUser, getSucursales, getGroups } from '../../services/apiService';
 import { toast } from 'react-hot-toast';
 import { IconTrash, IconPencil, IconPlus, IconX, IconCheck, IconBuildingStore } from '@tabler/icons-react';
 
 const UserManagement = () => {
     const [users, setUsers] = useState([]);
     const [sucursales, setSucursales] = useState([]);
+    const [groups, setGroups] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
@@ -15,14 +16,24 @@ const UserManagement = () => {
         last_name: '',
         email: '',
         password: '',
-        role: 'Vendedor',
+        group_id: '',
         sucursal_id: ''
     });
 
     useEffect(() => {
         fetchUsers();
         fetchSucursales();
+        fetchGroups();
     }, []);
+
+    const fetchGroups = async () => {
+        try {
+            const response = await getGroups();
+            setGroups(response.data);
+        } catch (error) {
+            console.error("Error fetching groups:", error);
+        }
+    };
 
     const fetchUsers = async () => {
         try {
@@ -53,7 +64,7 @@ const UserManagement = () => {
             last_name: user.last_name,
             email: user.email,
             password: '',
-            role: user.role,
+            group_id: user.groups && user.groups.length > 0 ? user.groups[0].id : '',
             sucursal_id: user.sucursal && user.sucursal !== 'Sin Sucursal' 
                 ? sucursales.find(s => s.nombre === user.sucursal)?.id || '' 
                 : ''
@@ -80,6 +91,10 @@ const UserManagement = () => {
             const dataToSend = { ...formData };
             if (!dataToSend.password) delete dataToSend.password;
             if (!dataToSend.sucursal_id) dataToSend.sucursal_id = null;
+            
+            // Map group_id to group_ids array for backend
+            dataToSend.group_ids = formData.group_id ? [parseInt(formData.group_id)] : [];
+            delete dataToSend.group_id;
 
             if (editingUser) {
                 await updateUser(editingUser.id, dataToSend);
@@ -90,7 +105,7 @@ const UserManagement = () => {
             }
             setShowForm(false);
             fetchUsers();
-            setFormData({ username: '', first_name: '', last_name: '', email: '', password: '', role: 'Vendedor', sucursal_id: '' });
+            setFormData({ username: '', first_name: '', last_name: '', email: '', password: '', group_id: '', sucursal_id: '' });
             setEditingUser(null);
         } catch (error) {
             console.error(error);
@@ -101,7 +116,7 @@ const UserManagement = () => {
     const handleCancel = () => {
         setShowForm(false);
         setEditingUser(null);
-        setFormData({ username: '', first_name: '', last_name: '', email: '', password: '', role: 'Vendedor', sucursal_id: '' });
+        setFormData({ username: '', first_name: '', last_name: '', email: '', password: '', group_id: '', sucursal_id: '' });
     };
 
     return (
@@ -125,7 +140,7 @@ const UserManagement = () => {
                             <h3 className="text-xl font-bold text-gray-800">
                                 {editingUser ? 'Editar Usuario' : 'Nuevo Usuario'}
                             </h3>
-                            <button onClick={handleCancel} className="text-gray-400 hover:text-gray-600">
+                            <button onClick={handleCancel} className="text-gray-600 hover:text-gray-600">
                                 <IconX size={20} />
                             </button>
                         </div>
@@ -144,16 +159,18 @@ const UserManagement = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Rol</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Rol / Grupo</label>
                                     <select 
-                                        name="role" 
-                                        value={formData.role} 
-                                        onChange={(e) => setFormData({...formData, role: e.target.value})}
+                                        name="group_id" 
+                                        value={formData.group_id} 
+                                        onChange={(e) => setFormData({...formData, group_id: e.target.value})}
                                         className="w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        required
                                     >
-                                        <option value="Administrador">Administrador</option>
-                                        <option value="Vendedor">Vendedor</option>
-                                        <option value="Almacenista">Almacenista</option>
+                                        <option value="">-- Seleccionar Rol --</option>
+                                        {groups.map(g => (
+                                            <option key={g.id} value={g.id}>{g.name}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
@@ -196,7 +213,7 @@ const UserManagement = () => {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Contraseña {editingUser && <span className="text-gray-400 font-normal">(Dejar en blanco para mantener)</span>}
+                                    Contraseña {editingUser && <span className="text-gray-600 font-normal">(Dejar en blanco para mantener)</span>}
                                 </label>
                                 <input 
                                     type="password" 
@@ -211,7 +228,7 @@ const UserManagement = () => {
                             {/* Sucursal Field */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
-                                    <IconBuildingStore size={16} className="text-gray-500"/> Sucursal Asignada
+                                    <IconBuildingStore size={16} className="text-gray-700"/> Sucursal Asignada
                                 </label>
                                 <select 
                                     name="sucursal_id" 
@@ -250,12 +267,12 @@ const UserManagement = () => {
                 <table className="min-w-full text-left">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Usuario</th>
-                            <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Nombre</th>
-                            <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
-                            <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Rol</th>
-                            <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Sucursal</th>
-                            <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
+                            <th className="p-4 text-xs font-semibold text-gray-700 uppercase tracking-wider">Usuario</th>
+                            <th className="p-4 text-xs font-semibold text-gray-700 uppercase tracking-wider">Nombre</th>
+                            <th className="p-4 text-xs font-semibold text-gray-700 uppercase tracking-wider">Email</th>
+                            <th className="p-4 text-xs font-semibold text-gray-700 uppercase tracking-wider">Rol</th>
+                            <th className="p-4 text-xs font-semibold text-gray-700 uppercase tracking-wider">Sucursal</th>
+                            <th className="p-4 text-xs font-semibold text-gray-700 uppercase tracking-wider">Acciones</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -263,7 +280,7 @@ const UserManagement = () => {
                             <tr key={user.id} className="hover:bg-blue-50/50 transition-colors">
                                 <td className="p-4 font-medium text-gray-900">{user.username}</td>
                                 <td className="p-4 text-gray-600">{user.first_name} {user.last_name}</td>
-                                <td className="p-4 text-gray-500">{user.email}</td>
+                                <td className="p-4 text-gray-700">{user.email}</td>
                                 <td className="p-4">
                                     <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
                                         {user.role}
@@ -275,7 +292,7 @@ const UserManagement = () => {
                                             <IconBuildingStore size={14}/> {user.sucursal}
                                         </span>
                                      ) : (
-                                        <span className="text-gray-400 text-sm italic">--</span>
+                                        <span className="text-gray-600 text-sm italic">--</span>
                                      )}
                                 </td>
                                 <td className="p-4">
@@ -301,7 +318,7 @@ const UserManagement = () => {
                     </tbody>
                 </table>
                 {users.length === 0 && !loading && (
-                    <div className="p-8 text-center text-gray-500">
+                    <div className="p-8 text-center text-gray-700">
                         No hay usuarios registrados.
                     </div>
                 )}

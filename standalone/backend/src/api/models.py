@@ -157,6 +157,7 @@ class Proveedor(models.Model):
 class Venta(models.Model):
     cajero = models.ForeignKey(User, related_name='ventas', on_delete=models.SET_NULL, null=True)
     cliente = models.ForeignKey(Cliente, related_name='compras', on_delete=models.SET_NULL, null=True, blank=True)
+    sucursal = models.ForeignKey('Sucursal', related_name='ventas', on_delete=models.SET_NULL, null=True, blank=True)
     total = models.DecimalField(max_digits=10, decimal_places=2)
     creado_en = models.DateTimeField(auto_now_add=True)
     def __str__(self):
@@ -190,6 +191,7 @@ class VentaPago(models.Model):
 
 class RetiroCaja(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    sucursal = models.ForeignKey('Sucursal', related_name='retiros', on_delete=models.SET_NULL, null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True)
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     motivo = models.CharField(max_length=255)
@@ -222,6 +224,7 @@ class EntradaStock(models.Model):
     ]
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, default='COMPRA')
     proveedor = models.ForeignKey(Proveedor, on_delete=models.SET_NULL, null=True, blank=True)
+    sucursal = models.ForeignKey('Sucursal', related_name='entradas', on_delete=models.SET_NULL, null=True, blank=True)
     sucursal_origen = models.ForeignKey(Sucursal, related_name='salidas_transferencia', on_delete=models.SET_NULL, null=True, blank=True)
     factura = models.CharField(max_length=100, blank=True, null=True)
     usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -250,6 +253,7 @@ class EntradaStockItem(models.Model):
 
 class AjusteStock(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    sucursal = models.ForeignKey('Sucursal', related_name='ajustes', on_delete=models.SET_NULL, null=True, blank=True)
     usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     fecha = models.DateTimeField(auto_now_add=True)
     cantidad_anterior = models.DecimalField(max_digits=10, decimal_places=2)
@@ -314,6 +318,7 @@ class CorteCaja(models.Model):
         ('ARQUEO', 'Arqueo de Caja'),
     ]
     usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    sucursal = models.ForeignKey('Sucursal', related_name='cortes', on_delete=models.SET_NULL, null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True)
     tipo = models.CharField(max_length=10, choices=TIPO_CHOICES, default='CORTE')
     total_ventas = models.DecimalField(max_digits=10, decimal_places=2)

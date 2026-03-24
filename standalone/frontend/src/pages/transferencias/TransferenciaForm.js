@@ -163,16 +163,16 @@ const TransferenciaForm = () => {
         <div className="flex h-screen bg-gray-100 overflow-hidden">
             {/* Panel Izquierdo: Inventario */}
             <div className="w-1/2 flex flex-col border-r border-gray-300 bg-white">
-                <div className="p-4 bg-gray-800 text-white shadow">
+                <div className="p-4 bg-white border border-gray-200 shadow-md text-gray-800 shadow">
                     <h2 className="text-lg font-bold flex items-center gap-2">
                         Origen: {userProfile.sucursal_nombre}
                     </h2>
-                    <p className="text-sm text-gray-400">Selecciona productos de tu inventario</p>
+                    <p className="text-sm text-gray-600">Selecciona productos de tu inventario</p>
                 </div>
                 
                 <div className="p-4 border-b">
                      <div className="relative">
-                        <IconSearch className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+                        <IconSearch className="absolute left-3 top-2.5 text-gray-600 w-5 h-5" />
                         <input 
                             type="text" 
                             placeholder="Buscar producto por nombre o código..." 
@@ -185,13 +185,13 @@ const TransferenciaForm = () => {
 
                 <div className="flex-1 overflow-y-auto p-4 space-y-2">
                     {filteredInventario.length === 0 ? (
-                        <div className="text-center text-gray-500 mt-10">No hay productos disponibles.</div>
+                        <div className="text-center text-gray-700 mt-10">No hay productos disponibles.</div>
                     ) : (
                         filteredInventario.map(item => (
                             <div key={item.id} className="flex items-center justify-between p-3 bg-gray-50 rounded border hover:bg-gray-100 transition-colors">
                                 <div>
                                     <div className="font-bold text-gray-800">{item.producto_nombre}</div>
-                                    <div className="text-xs text-gray-500">Cod: {item.producto_codigo}</div>
+                                    <div className="text-xs text-gray-700">Cod: {item.producto_codigo}</div>
                                     <div className="text-sm text-blue-600 font-medium">Disponible: {parseFloat(item.cantidad).toFixed(2)}</div>
                                 </div>
                                 <button 
@@ -199,7 +199,7 @@ const TransferenciaForm = () => {
                                     disabled={cart.some(c => c.producto === item.producto)}
                                     className={`px-3 py-1 rounded text-sm font-medium ${
                                         cart.some(c => c.producto === item.producto) 
-                                        ? 'bg-gray-300 text-gray-500' 
+                                        ? 'bg-gray-300 text-gray-700' 
                                         : 'bg-blue-600 text-white hover:bg-blue-700'
                                     }`}
                                 >
@@ -252,7 +252,7 @@ const TransferenciaForm = () => {
                     </h3>
                     
                     {cart.length === 0 ? (
-                        <div className="text-center text-gray-400 mt-10">
+                        <div className="text-center text-gray-600 mt-10">
                             Agrega productos del panel izquierdo.
                         </div>
                     ) : (
@@ -260,11 +260,11 @@ const TransferenciaForm = () => {
                             <div key={item.producto} className="flex items-center justify-between p-3 bg-white rounded shadow-sm border border-gray-200">
                                 <div className="flex-1">
                                     <div className="font-medium text-gray-800">{item.producto_nombre}</div>
-                                    <div className="text-xs text-gray-500">Max: {item.cantidad}</div>
+                                    <div className="text-xs text-gray-700">Max: {item.cantidad}</div>
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <div className="flex flex-col items-end">
-                                        <label className="text-[10px] uppercase text-gray-500 font-bold mb-1">Cantidad</label>
+                                        <label className="text-[10px] uppercase text-gray-700 font-bold mb-1">Cantidad</label>
                                         <input 
                                             type="number" 
                                             min="0.01" 

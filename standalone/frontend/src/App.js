@@ -29,6 +29,7 @@ import TransferenciaForm from './pages/transferencias/TransferenciaForm';
 import ClienteManagement from './pages/people/ClienteManagement';
 import ProveedorManagement from './pages/people/ProveedorManagement';
 import UserManagement from './pages/people/UserManagement';
+import RoleManagement from './pages/people/RoleManagement';
 
 // Sales & Cash
 import ReporteVentas from './pages/sales/ReporteVentas';
@@ -68,9 +69,8 @@ function App() {
 
   if (!isLoggedIn) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
-        <div className="w-full max-w-md">
-          <h1 className="text-5xl font-bold text-primary text-center mb-8">TECH4BISS</h1>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 text-gray-800 p-4">
+        <div className="w-full max-w-md flex flex-col items-center">
           <LoginForm onLoginSuccess={handleLoginSuccess} />
         </div>
       </div>
@@ -121,6 +121,7 @@ function App() {
 
         {/* Settings */}
         <Route path="/usuarios" element={<PosLayout><UserManagement /></PosLayout>} />
+        <Route path="/roles" element={<PosLayout><RoleManagement /></PosLayout>} />
         <Route path="/perfil" element={<PosLayout><Perfil /></PosLayout>} /> {/* Profile Route */}
         <Route path="/configuracion" element={<PosLayout><Configuracion /></PosLayout>} />
         <Route path="/descuentos" element={<PosLayout><ConfigurarDescuentos /></PosLayout>} />

@@ -128,7 +128,7 @@ const CorteCaja = () => {
 
     const DenomInput = ({ label, value, onChange }) => (
         <div className="flex justify-between items-center mb-1">
-            <span className="text-gray-400 w-16 text-right mr-2">${label}</span>
+            <span className="text-gray-600 w-16 text-right mr-2">${label}</span>
             <input
                 type="number"
                 min="0"
@@ -164,51 +164,51 @@ const CorteCaja = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
                 {/* Panel Izquierdo: Arqueo */}
-                <div className="lg:col-span-7 bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700">
-                    <h3 className="text-xl text-cyan-400 mb-4 border-b border-gray-700 pb-2 font-bold">Arqueo de Valores</h3>
+                <div className="lg:col-span-7 bg-white border border-gray-200 shadow-md p-6 rounded-2xl shadow-xl border border-gray-200">
+                    <h3 className="text-xl text-cyan-400 mb-4 border-b border-gray-200 pb-2 font-bold">Arqueo de Valores</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                            <h4 className="text-gray-300 font-bold mb-2 text-center text-sm uppercase">Billetes (MXN)</h4>
+                            <h4 className="text-gray-700 font-bold mb-2 text-center text-sm uppercase">Billetes (MXN)</h4>
                             {[500, 200, 100, 50, 20].map(denom => (
                                 <DenomInput key={denom} label={denom} value={billetes[denom]} onChange={(d, v) => setBilletes({ ...billetes, [d]: v })} />
                             ))}
                         </div>
                         <div>
-                            <h4 className="text-gray-300 font-bold mb-2 text-center text-sm uppercase">Monedas (MXN)</h4>
+                            <h4 className="text-gray-700 font-bold mb-2 text-center text-sm uppercase">Monedas (MXN)</h4>
                             {[20, 10, 5, 2, 1, 0.5].map(denom => (
                                 <DenomInput key={denom} label={denom} value={monedas[denom]} onChange={(d, v) => setMonedas({ ...monedas, [d]: v })} />
                             ))}
                         </div>
                         <div>
-                            <h4 className="text-gray-300 font-bold mb-2 text-center text-sm uppercase">Dólares (USD)</h4>
+                            <h4 className="text-gray-700 font-bold mb-2 text-center text-sm uppercase">Dólares (USD)</h4>
                             {[100, 50, 20, 10, 5, 1].map(denom => (
                                 <DenomInput key={denom} label={denom} value={dolares[denom]} onChange={(d, v) => setDolares({ ...dolares, [d]: v })} />
                             ))}
                             <div className="mt-4 p-2 bg-gray-700/50 rounded">
-                                <label className="block text-xs text-gray-400 mb-1">Tipo de Cambio</label>
+                                <label className="block text-xs text-gray-600 mb-1">Tipo de Cambio</label>
                                 <input
                                     type="number"
                                     step="0.01"
                                     value={tcDollar}
                                     onChange={(e) => setTcDollar(parseFloat(e.target.value))}
-                                    className="w-full p-1 bg-gray-800 text-white text-right rounded border border-gray-600"
+                                    className="w-full p-1 bg-white border border-gray-200 shadow-md text-gray-800 text-right rounded border border-gray-600"
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <div className="mt-6 border-t border-gray-700 pt-4 flex justify-between items-center">
+                    <div className="mt-6 border-t border-gray-200 pt-4 flex justify-between items-center">
                         <span className="text-xl font-bold text-white">Gran Total Físico:</span>
                         <span className="text-3xl font-bold text-cyan-400">${totalFisico.toFixed(2)}</span>
                     </div>
 
                     <div className="mt-4">
-                        <label className="block text-sm mb-1 text-gray-400">Notas / Observaciones</label>
+                        <label className="block text-sm mb-1 text-gray-600">Notas / Observaciones</label>
                         <textarea
                             value={notas}
                             onChange={e => setNotas(e.target.value)}
-                            className="p-2 bg-gray-900 border border-gray-700 rounded w-full text-white h-20 focus:border-cyan-500 outline-none"
+                            className="p-2 bg-gray-50 border border-gray-200 rounded w-full text-gray-800 h-20 focus:border-cyan-500 outline-none"
                             placeholder="..."
                         ></textarea>
                     </div>
@@ -225,8 +225,8 @@ const CorteCaja = () => {
                 <div className="lg:col-span-5 space-y-6">
 
                     {/* Tarjeta Totales */}
-                    <div className="bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700">
-                        <h3 className="text-xl text-gray-300 mb-4 border-b border-gray-700 pb-2 font-bold flex justify-between">
+                    <div className="bg-white border border-gray-200 shadow-md p-6 rounded-2xl shadow-xl border border-gray-200">
+                        <h3 className="text-xl text-gray-700 mb-4 border-b border-gray-200 pb-2 font-bold flex justify-between">
                             Totales Sistema
                             <span className="text-xs font-normal opacity-50 self-center">Hoy</span>
                         </h3>
@@ -249,7 +249,7 @@ const CorteCaja = () => {
                                 />
                             </div>
 
-                            <hr className="border-gray-700 my-2" />
+                            <hr className="border-gray-200 my-2" />
 
                             <div className="flex justify-between text-red-400">
                                 <span>(-) Pagos Proveedores</span>
@@ -260,19 +260,19 @@ const CorteCaja = () => {
                                 <span>${calculo?.retiros || calculo?.total_retiros || 0}</span>
                             </div>
 
-                            <hr className="border-gray-700 my-2" />
+                            <hr className="border-gray-200 my-2" />
 
                             <div className="flex justify-between text-white text-lg font-bold border-t border-gray-600 pt-2 bg-gray-700/30 p-2 rounded">
                                 <span>(=) Esperado en Caja</span>
                                 <span>${totalTeorico.toFixed(2)}</span>
                             </div>
 
-                            <div className="mt-4 pt-4 border-t border-gray-700">
-                                <div className="flex justify-between text-gray-500 text-xs mb-1">
+                            <div className="mt-4 pt-4 border-t border-gray-200">
+                                <div className="flex justify-between text-gray-700 text-xs mb-1">
                                     <span>Ventas Tarjeta</span>
                                     <span>${calculo?.ventas_tarjeta}</span>
                                 </div>
-                                <div className="flex justify-between text-gray-500 text-xs">
+                                <div className="flex justify-between text-gray-700 text-xs">
                                     <span>Ventas Crédito</span>
                                     <span>${calculo?.ventas_credito}</span>
                                 </div>
@@ -288,14 +288,14 @@ const CorteCaja = () => {
                     </div>
 
                     {/* Historial */}
-                    <div className="bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700 flex-1">
-                        <h3 className="text-xl text-gray-300 mb-4 border-b border-gray-700 pb-2 font-bold flex gap-2 items-center">
+                    <div className="bg-white border border-gray-200 shadow-md p-6 rounded-2xl shadow-xl border border-gray-200 flex-1">
+                        <h3 className="text-xl text-gray-700 mb-4 border-b border-gray-200 pb-2 font-bold flex gap-2 items-center">
                             <IconHistory size={20} /> Historial
                         </h3>
                         <div className="overflow-y-auto max-h-[300px] scrollbar-thin scrollbar-thumb-gray-600">
-                            <table className="w-full text-left text-gray-400 text-sm">
+                            <table className="w-full text-left text-gray-600 text-sm">
                                 <thead>
-                                    <tr className="text-xs uppercase text-gray-500 border-b border-gray-700">
+                                    <tr className="text-xs uppercase text-gray-700 border-b border-gray-200">
                                         <th className="p-2">Fecha</th>
                                         <th className="p-2 text-right">Diferencia</th>
                                         <th className="p-2 text-center"></th>
@@ -303,7 +303,7 @@ const CorteCaja = () => {
                                 </thead>
                                 <tbody>
                                     {historial.map(c => (
-                                        <tr key={c.id} className="border-b border-gray-700 hover:bg-gray-700/50 transition-colors">
+                                        <tr key={c.id} className="border-b border-gray-200 hover:bg-gray-100/50 transition-colors">
                                             <td className="p-2">
                                                 {new Date(c.fecha).toLocaleDateString()}
                                                 <span className="text-xs block text-gray-600">{new Date(c.fecha).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</span>

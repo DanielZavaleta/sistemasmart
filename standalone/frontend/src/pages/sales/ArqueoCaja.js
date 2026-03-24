@@ -39,7 +39,7 @@ const ArqueoCaja = () => {
                 <p className="text-gray-600 mb-6">
                     Presiona el botón para generar e imprimir el reporte de arqueo del turno actual.
                     <br/>
-                    <span className="text-sm text-gray-400">(No cierra el turno en el sistema)</span>
+                    <span className="text-sm text-gray-600">(No cierra el turno en el sistema)</span>
                 </p>
 
                 {error && (

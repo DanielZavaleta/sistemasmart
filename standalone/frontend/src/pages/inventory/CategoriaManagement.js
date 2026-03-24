@@ -26,16 +26,16 @@ const SimpleForm = ({ item, onSave, onCancel, fields }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-gray-700 p-4 rounded mb-4">
+    <form onSubmit={handleSubmit} className="bg-gray-50 border border-gray-100 p-4 rounded mb-4">
       {fields.map(field => (
         <div key={field.name} className="mb-2">
-          <label className="block text-gray-300 text-sm mb-1">{field.label}</label>
+          <label className="block text-gray-700 text-sm mb-1">{field.label}</label>
           {field.type === 'select' ? (
             <select
               name={field.name}
               value={formData[field.name] || ''}
               onChange={handleChange}
-              className="p-2 bg-gray-600 rounded w-full"
+              className="p-2 bg-gray-50 border border-gray-100 rounded w-full"
             >
               <option value="">{field.placeholder}</option>
               {field.options.map(opt => (
@@ -49,14 +49,14 @@ const SimpleForm = ({ item, onSave, onCancel, fields }) => {
               value={formData[field.name] || ''}
               onChange={handleChange}
               placeholder={field.placeholder}
-              className="p-2 bg-gray-600 rounded w-full"
+              className="p-2 bg-gray-50 border border-gray-100 rounded w-full"
             />
           )}
         </div>
       ))}
       <div className="mt-4">
         <button type="submit" className="bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded mr-2">Guardar</button>
-        <button type="button" onClick={onCancel} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancelar</button>
+        <button type="button" onClick={onCancel} className="bg-gray-500 hover:bg-gray-100 text-gray-800 font-bold py-2 px-4 rounded">Cancelar</button>
       </div>
     </form>
   );
@@ -137,10 +137,10 @@ const CategoriaManagement = () => {
             ]}
           />
         )}
-        <div className="bg-gray-800 rounded shadow-md">
+        <div className="bg-white border border-gray-200 shadow-md rounded shadow-md">
           {familias.map(f => (
-            <div key={f.id} className="flex justify-between items-center p-3 border-b border-gray-700">
-              <span className="text-white">{f.nombre}</span>
+            <div key={f.id} className="flex justify-between items-center p-3 border-b border-gray-200">
+              <span className="text-gray-800 font-medium">{f.nombre}</span>
               <div>
                 <button onClick={() => { setEditingFamilia(f); setShowFamiliaForm(true); }} className="bg-yellow-500 text-sm py-1 px-2 rounded mr-2">Editar</button>
                 <button onClick={() => handleDeleteFamilia(f.id)} className="bg-red-500 text-sm py-1 px-2 rounded">Eliminar</button>
@@ -167,11 +167,11 @@ const CategoriaManagement = () => {
             ]}
           />
         )}
-        <div className="bg-gray-800 rounded shadow-md">
+        <div className="bg-white border border-gray-200 shadow-md rounded shadow-md">
           {subfamilias.map(s => (
-            <div key={s.id} className="flex justify-between items-center p-3 border-b border-gray-700">
+            <div key={s.id} className="flex justify-between items-center p-3 border-b border-gray-200">
               <div>
-                <span className="text-white">{s.nombre}</span>
+                <span className="text-gray-800 font-medium">{s.nombre}</span>
                 <span className="text-xs text-cyan-400 block">{s.familia_nombre}</span>
               </div>
               <div>

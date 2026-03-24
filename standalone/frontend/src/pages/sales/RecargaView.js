@@ -73,9 +73,9 @@ const RecargaView = () => {
           Venta de Tiempo Aire
         </h2>
 
-        <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <form onSubmit={handleSubmit} className="bg-white border border-gray-200 shadow-md p-6 rounded-lg shadow-lg">
           <div className="mb-4">
-            <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="numero">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="numero">
               Número de Teléfono (10 dígitos)
             </label>
             <div className="relative">
@@ -96,7 +96,7 @@ const RecargaView = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-300 text-sm font-bold mb-2">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               Selección Rápida
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -105,7 +105,7 @@ const RecargaView = () => {
                   key={m}
                   type="button"
                   onClick={() => handleSetMonto(m)}
-                  className={`p-3 rounded font-bold ${monto === m.toString() ? 'bg-cyan-500 text-white' : 'bg-gray-600 hover:bg-gray-500'}`}
+                  className={`p-3 rounded font-bold ${monto === m.toString() ? 'bg-cyan-500 text-white' : 'bg-gray-50 border border-gray-100 hover:bg-gray-500'}`}
                 >
                   ${m}
                 </button>
@@ -114,7 +114,7 @@ const RecargaView = () => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="monto">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="monto">
               Otro Monto
             </label>
             <input

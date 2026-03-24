@@ -22,7 +22,7 @@ const PosLayout = ({ children }) => {
                 </main>
 
                 {/* Simple Footer */}
-                <footer className="p-4 text-center text-xs text-gray-500">
+                <footer className="p-4 text-center text-xs text-gray-700">
                     TECH4BISS v1.0 &copy; 2026
                 </footer>
             </div>

@@ -58,6 +58,10 @@ export const updateUser = (id, userData) => {
 };
 export const deleteUser = (id) => apiClient.delete(`users/${id}/`);
 export const getGroups = () => apiClient.get('groups/');
+export const createGroup = (data) => apiClient.post('groups/', data);
+export const updateGroup = (id, data) => apiClient.put(`groups/${id}/`, data);
+export const deleteGroup = (id) => apiClient.delete(`groups/${id}/`);
+export const getPermissions = () => apiClient.get('permissions/');
 export const getProductos = () => apiClient.get('productos/');
 export const createProducto = (productoData) => apiClient.post('productos/', productoData);
 export const updateProducto = (id, productoData) => apiClient.put(`productos/${id}/`, productoData);

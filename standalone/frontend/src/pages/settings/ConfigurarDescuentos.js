@@ -55,17 +55,17 @@ const ConfigurarDescuentos = () => {
     };
 
     return (
-        <div className="p-4 bg-gray-900 min-h-screen text-white">
+        <div className="p-4 bg-gray-50 min-h-screen text-gray-800">
             <h1 className="text-3xl font-bold mb-6 text-cyan-400">Configuración de Descuentos</h1>
 
             <div className="flex gap-6">
                 {/* Formulario de Creación */}
-                <div className="w-1/3 bg-gray-800 p-6 rounded-lg shadow-lg h-fit">
+                <div className="w-1/3 bg-white border border-gray-200 shadow-md p-6 rounded-lg shadow-lg h-fit">
                     <h2 className="text-xl font-bold mb-4">Agregar Nuevo Nivel</h2>
                     {error && <p className="text-red-500 mb-4">{error}</p>}
                     <form onSubmit={handleCreate}>
                         <div className="mb-4">
-                            <label className="block text-gray-400 mb-2">Porcentaje (%)</label>
+                            <label className="block text-gray-600 mb-2">Porcentaje (%)</label>
                             <input
                                 type="number"
                                 min="0"
@@ -78,7 +78,7 @@ const ConfigurarDescuentos = () => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-gray-400 mb-2">Descripción (Opcional)</label>
+                            <label className="block text-gray-600 mb-2">Descripción (Opcional)</label>
                             <input
                                 type="text"
                                 value={newDescripcion}
@@ -100,10 +100,10 @@ const ConfigurarDescuentos = () => {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {descuentos.map(d => (
-                                <div key={d.id} className="bg-gray-800 p-4 rounded border border-gray-700 flex justify-between items-center">
+                                <div key={d.id} className="bg-white border border-gray-200 shadow-md p-4 rounded border border-gray-200 flex justify-between items-center">
                                     <div>
                                         <p className="text-2xl font-bold text-cyan-400">{d.porcentaje}%</p>
-                                        {d.descripcion && <p className="text-gray-400 text-sm">{d.descripcion}</p>}
+                                        {d.descripcion && <p className="text-gray-600 text-sm">{d.descripcion}</p>}
                                     </div>
                                     <button
                                         onClick={() => handleDelete(d.id)}
@@ -113,7 +113,7 @@ const ConfigurarDescuentos = () => {
                                     </button>
                                 </div>
                             ))}
-                            {descuentos.length === 0 && <p className="text-gray-500 col-span-full">No hay descuentos configurados.</p>}
+                            {descuentos.length === 0 && <p className="text-gray-700 col-span-full">No hay descuentos configurados.</p>}
                         </div>
                     )}
                 </div>

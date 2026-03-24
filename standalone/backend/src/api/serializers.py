@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 from rest_framework import serializers
 import decimal
 from django.db import transaction 
@@ -37,23 +37,41 @@ class ConfiguracionSerializer(serializers.ModelSerializer):
         ]
 
 
+class PermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = ['id', 'name', 'codename']
+
+
 class GroupSerializer(serializers.ModelSerializer):
+    permissions = serializers.SlugRelatedField(
+        many=True,
+        slug_field='codename',
+        queryset=Permission.objects.all(),
+        required=False
+    )
+
     class Meta:
         model = Group
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'permissions']
 
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
     role = serializers.SerializerMethodField()
+    sucursal = serializers.SerializerMethodField()
+    groups = GroupSerializer(many=True, read_only=True)
+    group_ids = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Group.objects.all(), write_only=True, required=False, source='groups'
+    )
     sucursal_id = serializers.PrimaryKeyRelatedField(
-        queryset=Sucursal.objects.all(), source='perfil.sucursal', write_only=True, required=False, allow_null=True
+        queryset=Sucursal.objects.all(), source='perfil.sucursal', required=False, allow_null=True
     )
     avatar = serializers.ImageField(source='perfil.avatar', required=False, allow_null=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password', 'role', 'sucursal', 'sucursal_id', 'avatar']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password', 'role', 'is_superuser', 'sucursal', 'sucursal_id', 'avatar', 'groups', 'group_ids']
     
     def get_role(self, obj):
         return obj.groups.first().name if obj.groups.exists() else 'N/A'
@@ -300,18 +318,26 @@ class EntradaStockSerializer(serializers.ModelSerializer):
     items = EntradaStockItemSerializer(many=True)
     proveedor_nombre = serializers.CharField(source='proveedor.nombre_comercial', read_only=True, allow_null=True)
     usuario_username = serializers.CharField(source='usuario.username', read_only=True)
-    proveedor_id = serializers.PrimaryKeyRelatedField(queryset=Proveedor.objects.all(), source='proveedor', write_only=True, allow_null=True)
+    proveedor_id = serializers.PrimaryKeyRelatedField(queryset=Proveedor.objects.all(), source='proveedor', write_only=True, allow_null=True, required=False)
     sucursal_origen_nombre = serializers.CharField(source='sucursal_origen.nombre', read_only=True, allow_null=True)
-    sucursal_origen_id = serializers.PrimaryKeyRelatedField(queryset=Sucursal.objects.all(), source='sucursal_origen', write_only=True, allow_null=True)
+    sucursal_origen_id = serializers.PrimaryKeyRelatedField(queryset=Sucursal.objects.all(), source='sucursal_origen', write_only=True, allow_null=True, required=False)
+    sucursal_nombre = serializers.CharField(source='sucursal.nombre', read_only=True, allow_null=True)
+    sucursal_id = serializers.PrimaryKeyRelatedField(queryset=Sucursal.objects.all(), source='sucursal', write_only=True, allow_null=True, required=False)
     
     class Meta:
         model = EntradaStock
-        fields = ['id', 'tipo', 'proveedor_id', 'proveedor_nombre', 'sucursal_origen_id', 'sucursal_origen_nombre', 'factura', 'usuario_username', 'fecha', 'notas', 'total_costo', 'items']
+        fields = ['id', 'tipo', 'proveedor_id', 'proveedor_nombre', 'sucursal_origen_id', 'sucursal_origen_nombre', 'sucursal_id', 'sucursal_nombre', 'factura', 'usuario_username', 'fecha', 'notas', 'total_costo', 'items']
         read_only_fields = ('total_costo', 'usuario_username', 'fecha')
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
-        validated_data['usuario'] = self.context['request'].user
+        user = self.context['request'].user
+        validated_data['usuario'] = user
+        
+        # Fallback to user sucursal if not provided
+        if 'sucursal' not in validated_data:
+             validated_data['sucursal'] = user.perfil.sucursal if hasattr(user, 'perfil') else None
+             
         total_costo = decimal.Decimal('0.00')
         try:
             with transaction.atomic():
@@ -335,6 +361,13 @@ class EntradaStockSerializer(serializers.ModelSerializer):
                     producto = item_data['producto']
                     producto.stock_actual += cantidad
                     producto.costo = costo_unitario 
+                    
+                    # Update Inventario
+                    from .models import Inventario
+                    if entrada.sucursal:
+                         inv, _ = Inventario.objects.get_or_create(sucursal=entrada.sucursal, producto=producto, defaults={'cantidad': 0})
+                         inv.cantidad += cantidad
+                         inv.save()
                     
                     # Actualizar precio de venta si viene sugerido (HU-20 / 7.5)
                     sugerido = item_data.get('precio_venta_sugerido', 0.00)
@@ -366,23 +399,36 @@ class AjusteStockSerializer(serializers.ModelSerializer):
     producto_id = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all(), source='producto', write_only=True)
     producto_nombre = serializers.CharField(source='producto.descripcion', read_only=True)
     usuario_username = serializers.CharField(source='usuario.username', read_only=True)
+    sucursal_nombre = serializers.CharField(source='sucursal.nombre', read_only=True, allow_null=True)
+    sucursal_id = serializers.PrimaryKeyRelatedField(queryset=Sucursal.objects.all(), source='sucursal', write_only=True, allow_null=True, required=False)
     
     class Meta:
         model = AjusteStock
-        fields = ['id', 'fecha', 'producto_id', 'producto_nombre', 'usuario_username', 'cantidad_anterior', 'cantidad_nueva', 'diferencia', 'notas']
+        fields = ['id', 'fecha', 'producto_id', 'producto_nombre', 'usuario_username', 'sucursal_id', 'sucursal_nombre', 'cantidad_anterior', 'cantidad_nueva', 'diferencia', 'notas']
         read_only_fields = ('id', 'fecha', 'usuario_username', 'cantidad_anterior', 'diferencia')
     def create(self, validated_data):
 
         producto = validated_data.get('producto')
         cantidad_nueva = validated_data.get('cantidad_nueva')
         usuario = self.context['request'].user
+        # Fallback to user sucursal
+        if 'sucursal' not in validated_data:
+             validated_data['sucursal'] = usuario.perfil.sucursal if hasattr(usuario, 'perfil') else None
+             
         try:
             with transaction.atomic():
                 cantidad_anterior = producto.stock_actual
                 diferencia = cantidad_nueva - cantidad_anterior
-                ajuste = AjusteStock.objects.create(producto=producto, usuario=usuario, cantidad_anterior=cantidad_anterior, cantidad_nueva=cantidad_nueva, diferencia=diferencia, notas=validated_data.get('notas', ''))
+                ajuste = AjusteStock.objects.create(producto=producto, usuario=usuario, sucursal=validated_data['sucursal'], cantidad_anterior=cantidad_anterior, cantidad_nueva=cantidad_nueva, diferencia=diferencia, notas=validated_data.get('notes', ''))
                 producto.stock_actual = cantidad_nueva
                 producto.save()
+                
+                # Update Inventario
+                from .models import Inventario
+                if ajuste.sucursal:
+                    inv, _ = Inventario.objects.get_or_create(sucursal=ajuste.sucursal, producto=producto, defaults={'cantidad': 0})
+                    inv.cantidad = cantidad_nueva
+                    inv.save()
                 return ajuste
         except Exception as e:
             raise serializers.ValidationError(str(e))
@@ -475,8 +521,8 @@ class MovimientoClienteSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = MovimientoCliente
-        fields = ['id', 'cliente_id', 'cliente_nombre', 'venta', 'tipo', 'monto', 'fecha', 'notas']
-        read_only_fields = ('fecha', 'venta')
+        fields = ['id', 'cliente_id', 'cliente_nombre', 'tipo', 'monto', 'fecha', 'notas']
+        read_only_fields = ('fecha',)
 
 
     def create(self, validated_data):

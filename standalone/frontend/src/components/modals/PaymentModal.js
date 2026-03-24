@@ -116,7 +116,7 @@ const PaymentModal = ({ total, onClose, onConfirm, cliente }) => {
                 className={`p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all border
                                     ${activeMethod === m.id
                     ? 'bg-blue-600 text-white border-blue-600 shadow-lg scale-105'
-                    : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-100'
+                    : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'
                   }
                                     ${m.disabled ? 'opacity-50 cursor-not-allowed' : ''}
                                 `}
@@ -156,7 +156,7 @@ const PaymentModal = ({ total, onClose, onConfirm, cliente }) => {
               />
               <button
                 onClick={handleAddPayment}
-                className="bg-gray-800 text-white px-6 rounded-xl font-bold hover:bg-gray-700 transition-colors"
+                className="bg-white border border-gray-200 shadow-md text-white px-6 rounded-xl font-bold hover:bg-gray-100 transition-colors"
               >
                 Agregar
               </button>
@@ -173,9 +173,9 @@ const PaymentModal = ({ total, onClose, onConfirm, cliente }) => {
           </div>
 
           <div className="flex-1 p-6 overflow-y-auto">
-            <h4 className="text-sm font-bold text-gray-400 uppercase mb-3">Pagos Registrados</h4>
+            <h4 className="text-sm font-bold text-gray-600 uppercase mb-3">Pagos Registrados</h4>
             {pagos.length === 0 && (
-              <div className="text-center text-gray-300 py-10">
+              <div className="text-center text-gray-700 py-10">
                 <IconReceipt size={48} className="mx-auto mb-2 opacity-30" />
                 <p>No hay pagos agregados</p>
               </div>
@@ -189,14 +189,14 @@ const PaymentModal = ({ total, onClose, onConfirm, cliente }) => {
                     </div>
                     <div>
                       <p className="font-bold text-gray-800 capitalize">{p.metodo}</p>
-                      {p.metodo === 'dolares' && <p className="text-xs text-gray-500">USD ${p.monto} x {p.tc}</p>}
+                      {p.metodo === 'dolares' && <p className="text-xs text-gray-700">USD ${p.monto} x {p.tc}</p>}
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="font-bold text-gray-800">
                       ${(p.metodo === 'dolares' ? p.monto * p.tc : p.monto).toFixed(2)}
                     </span>
-                    <button onClick={() => removePago(p.id)} className="text-gray-400 hover:text-red-500 p-1">
+                    <button onClick={() => removePago(p.id)} className="text-gray-600 hover:text-red-500 p-1">
                       <IconX size={18} />
                     </button>
                   </div>

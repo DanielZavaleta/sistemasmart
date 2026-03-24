@@ -158,8 +158,8 @@ const ClienteAbonos = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                 {/* Panel Izquierdo: Selección y Formulario */}
-                <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                    <label className="block text-sm mb-2 text-gray-300">Seleccionar Cliente</label>
+                <div className="bg-white border border-gray-200 shadow-md p-6 rounded-lg shadow-lg">
+                    <label className="block text-sm mb-2 text-gray-700">Seleccionar Cliente</label>
                     <select
                         value={selectedClienteId}
                         onChange={e => setSelectedClienteId(e.target.value)}
@@ -174,9 +174,9 @@ const ClienteAbonos = () => {
                     </select>
 
                     {selectedClienteId && (
-                        <div className="border-t border-gray-700 pt-4">
+                        <div className="border-t border-gray-200 pt-4">
                             <div className="mb-6 text-center">
-                                <p className="text-gray-400">Saldo Actual</p>
+                                <p className="text-gray-600">Saldo Actual</p>
                                 <p className={`text-4xl font-bold ${saldoActual > 0 ? 'text-red-500' : 'text-green-500'}`}>
                                     ${saldoActual}
                                 </p>
@@ -186,7 +186,7 @@ const ClienteAbonos = () => {
                                 <h3 className="text-xl text-white mb-4">Registrar Abono</h3>
 
                                 <div className="mb-4">
-                                    <label className="block text-sm mb-1 text-gray-300">Monto *</label>
+                                    <label className="block text-sm mb-1 text-gray-700">Monto *</label>
                                     <input
                                         type="number"
                                         step="0.01"
@@ -198,7 +198,7 @@ const ClienteAbonos = () => {
                                 </div>
 
                                 <div className="mb-4">
-                                    <label className="block text-sm mb-1 text-gray-300">Notas</label>
+                                    <label className="block text-sm mb-1 text-gray-700">Notas</label>
                                     <input
                                         type="text"
                                         value={notas}
@@ -220,7 +220,7 @@ const ClienteAbonos = () => {
                 </div>
 
                 {/* Panel Derecho: Historial */}
-                <div className="md:col-span-2 bg-gray-800 p-6 rounded-lg shadow-lg">
+                <div className="md:col-span-2 bg-white border border-gray-200 shadow-md p-6 rounded-lg shadow-lg">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-xl text-white">Historial de Movimientos</h3>
                         {selectedClienteId && (
@@ -239,27 +239,27 @@ const ClienteAbonos = () => {
                     {selectedClienteId && (
                         <div className="flex gap-4 mb-4 bg-gray-700 p-3 rounded">
                             <div>
-                                <label className="block text-xs text-gray-400">Desde</label>
+                                <label className="block text-xs text-gray-600">Desde</label>
                                 <input
                                     type="date"
                                     value={fechaInicio}
                                     onChange={e => setFechaInicio(e.target.value)}
-                                    className="bg-gray-600 text-white p-1 rounded"
+                                    className="bg-gray-50 border border-gray-100 text-gray-800 p-1 rounded"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs text-gray-400">Hasta</label>
+                                <label className="block text-xs text-gray-600">Hasta</label>
                                 <input
                                     type="date"
                                     value={fechaFin}
                                     onChange={e => setFechaFin(e.target.value)}
-                                    className="bg-gray-600 text-white p-1 rounded"
+                                    className="bg-gray-50 border border-gray-100 text-gray-800 p-1 rounded"
                                 />
                             </div>
                             <div className="flex items-end">
                                 <button
                                     onClick={() => fetchMovimientos(selectedClienteId)}
-                                    className="bg-gray-500 hover:bg-gray-400 text-white px-3 py-1 rounded text-sm"
+                                    className="bg-gray-500 hover:bg-gray-400 text-gray-800 px-3 py-1 rounded text-sm"
                                 >
                                     Filtrar
                                 </button>
@@ -268,12 +268,12 @@ const ClienteAbonos = () => {
                     )}
 
                     {!selectedClienteId ? (
-                        <p className="text-gray-500">Seleccione un cliente para ver su historial.</p>
+                        <p className="text-gray-700">Seleccione un cliente para ver su historial.</p>
                     ) : (
                         <div className="overflow-x-auto">
-                            <table className="min-w-full text-left text-gray-300">
+                            <table className="min-w-full text-left text-gray-700">
                                 <thead>
-                                    <tr className="border-b border-gray-700 bg-gray-900">
+                                    <tr className="border-b border-gray-200 bg-gray-50">
                                         <th className="p-3">ID</th>
                                         <th className="p-3">Fecha</th>
                                         <th className="p-3">Tipo</th>
@@ -283,7 +283,7 @@ const ClienteAbonos = () => {
                                 </thead>
                                 <tbody>
                                     {movimientos.map(m => (
-                                        <tr key={m.id} className="border-b border-gray-700 hover:bg-gray-700">
+                                        <tr key={m.id} className="border-b border-gray-200 hover:bg-gray-100">
                                             <td className="p-3">{m.id}</td>
                                             <td className="p-3">{new Date(m.fecha).toLocaleDateString()} {new Date(m.fecha).toLocaleTimeString()}</td>
                                             <td className="p-3">
@@ -292,12 +292,12 @@ const ClienteAbonos = () => {
                                                 </span>
                                             </td>
                                             <td className="p-3 font-bold text-white">${m.monto}</td>
-                                            <td className="p-3 text-sm text-gray-400">{m.notas}</td>
+                                            <td className="p-3 text-sm text-gray-600">{m.notas}</td>
                                         </tr>
                                     ))}
                                     {movimientos.length === 0 && (
                                         <tr>
-                                            <td colSpan="5" className="p-4 text-center text-gray-500">No hay movimientos en este periodo.</td>
+                                            <td colSpan="5" className="p-4 text-center text-gray-700">No hay movimientos en este periodo.</td>
                                         </tr>
                                     )}
                                 </tbody>

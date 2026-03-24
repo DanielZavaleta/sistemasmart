@@ -158,8 +158,8 @@ const EntradaStockForm = ({ onSave, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg mb-6 shadow-xl border border-gray-700">
-      <h3 className="text-2xl text-white mb-6 font-semibold border-b border-gray-700 pb-2">
+    <form onSubmit={handleSubmit} className="bg-white border border-gray-200 shadow-md p-6 rounded-lg mb-6 shadow-xl border border-gray-200">
+      <h3 className="text-2xl text-gray-800 mb-6 font-semibold border-b border-gray-200 pb-2">
         Registro de {tipoEntrada === 'COMPRA' ? 'Compras' : 'Transferencias'}
       </h3>
 
@@ -174,7 +174,7 @@ const EntradaStockForm = ({ onSave, onCancel }) => {
             onChange={() => setTipoEntrada('COMPRA')}
             className="w-5 h-5 text-blue-600"
           />
-          <span className="ml-2 text-white font-medium">Compra</span>
+          <span className="ml-2 text-gray-800 font-medium">Compra</span>
         </label>
         <label className="flex items-center cursor-pointer">
           <input
@@ -183,16 +183,16 @@ const EntradaStockForm = ({ onSave, onCancel }) => {
             onChange={() => setTipoEntrada('TRANSFERENCIA')}
             className="w-5 h-5 text-blue-600"
           />
-          <span className="ml-2 text-white font-medium">Transferencia</span>
+          <span className="ml-2 text-gray-800 font-medium">Transferencia</span>
         </label>
       </div>
 
       {/* HEADER FORM */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 bg-gray-750 p-4 rounded">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 bg-gray-50 border border-gray-100 p-4 rounded">
         {tipoEntrada === 'COMPRA' ? (
           <>
             <div className="md:col-span-2">
-              <label className="block text-gray-400 text-xs uppercase mb-1">Proveedor</label>
+              <label className="block text-gray-600 text-xs uppercase mb-1">Proveedor</label>
               <select
                 value={proveedorId}
                 onChange={e => setProveedorId(e.target.value)}
@@ -205,7 +205,7 @@ const EntradaStockForm = ({ onSave, onCancel }) => {
               </select>
             </div>
             <div>
-              <label className="block text-gray-400 text-xs uppercase mb-1">Factura / Folio</label>
+              <label className="block text-gray-600 text-xs uppercase mb-1">Factura / Folio</label>
               <input
                 type="text"
                 value={factura}
@@ -216,7 +216,7 @@ const EntradaStockForm = ({ onSave, onCancel }) => {
           </>
         ) : (
           <div className="md:col-span-2">
-            <label className="block text-gray-400 text-xs uppercase mb-1">Sucursal Origen</label>
+            <label className="block text-gray-600 text-xs uppercase mb-1">Sucursal Origen</label>
             <select
               value={sucursalId}
               onChange={e => setSucursalId(e.target.value)}
@@ -234,9 +234,9 @@ const EntradaStockForm = ({ onSave, onCancel }) => {
 
       {/* BUSCADOR */}
       <div className="mb-6 relative">
-        <label className="block text-gray-400 text-xs uppercase mb-1">Agregar Producto (Código o Nombre)</label>
+        <label className="block text-gray-600 text-xs uppercase mb-1">Agregar Producto (Código o Nombre)</label>
         <div className="flex">
-          <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-600 bg-gray-600 text-gray-400 text-sm">
+          <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-600 bg-gray-50 border border-gray-100 text-gray-600 text-sm">
             🔍
           </span>
           <input
@@ -257,7 +257,7 @@ const EntradaStockForm = ({ onSave, onCancel }) => {
                 className="p-3 hover:bg-blue-600 cursor-pointer text-white border-b border-gray-600 last:border-0"
               >
                 <div className="font-bold">{p.descripcion}</div>
-                <div className="text-xs text-gray-300">Código: {p.codigo_barras} | Costo: ${p.costo}</div>
+                <div className="text-xs text-gray-700">Código: {p.codigo_barras} | Costo: ${p.costo}</div>
               </div>
             ))}
           </div>
@@ -265,10 +265,10 @@ const EntradaStockForm = ({ onSave, onCancel }) => {
       </div>
 
       {/* TABLA DE ITEMS */}
-      <div className="overflow-x-auto rounded border border-gray-700 mb-6">
+      <div className="overflow-x-auto rounded border border-gray-200 mb-6">
         <table className="w-full text-left bg-gray-700 text-sm">
           <thead>
-            <tr className="bg-gray-900 text-gray-400 uppercase text-xs">
+            <tr className="bg-gray-50 text-gray-600 uppercase text-xs">
               <th className="p-3 font-medium">Código</th>
               <th className="p-3 font-medium">Descripción</th>
               <th className="p-3 font-medium w-32">Caducidad</th>
@@ -284,12 +284,12 @@ const EntradaStockForm = ({ onSave, onCancel }) => {
           <tbody className="divide-y divide-gray-600">
             {items.length === 0 ? (
               <tr>
-                <td colSpan="10" className="p-8 text-center text-gray-500">
+                <td colSpan="10" className="p-8 text-center text-gray-700">
                   No hay productos agregados. Use el buscador.
                 </td>
               </tr>
             ) : items.map((item, index) => (
-              <tr key={item.producto_id} className="hover:bg-gray-600/50">
+              <tr key={item.producto_id} className="hover:bg-gray-50 border border-gray-100/50">
                 <td className="p-3 text-white">{item.codigo}</td>
                 <td className="p-3 text-white">
                   {item.nombre}
@@ -299,7 +299,7 @@ const EntradaStockForm = ({ onSave, onCancel }) => {
                     type="date"
                     value={item.fecha_caducidad || ''}
                     onChange={e => updateItem(index, 'fecha_caducidad', e.target.value)}
-                    className={`bg-gray-800 text-xs border rounded p-1 text-white w-full ${item.requiere_caducidad && !item.fecha_caducidad ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-600'}`}
+                    className={`bg-white border border-gray-200 shadow-md text-xs border rounded p-1 text-gray-800 w-full ${item.requiere_caducidad && !item.fecha_caducidad ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-600'}`}
                     required={item.requiere_caducidad}
                     title={item.requiere_caducidad ? "Requerido para pesecedros" : "Opcional"}
                   />
@@ -362,17 +362,17 @@ const EntradaStockForm = ({ onSave, onCancel }) => {
       </div>
 
 
-      <div className="flex justify-between items-center border-t border-gray-700 pt-4">
+      <div className="flex justify-between items-center border-t border-gray-200 pt-4">
         <div>
           <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-6 rounded mr-3 shadow-lg transform hover:-translate-y-0.5 transition-all">
             Guardar {tipoEntrada === 'COMPRA' ? 'Compra' : 'Transferencia'}
           </button>
-          <button type="button" onClick={onCancel} className="bg-gray-600 hover:bg-gray-500 text-white py-2.5 px-6 rounded">
+          <button type="button" onClick={onCancel} className="bg-gray-50 border border-gray-100 hover:bg-gray-500 text-gray-800 py-2.5 px-6 rounded">
             Cancelar
           </button>
         </div>
         <div className="text-right">
-          <p className="text-gray-400 uppercase text-xs">Total Operación</p>
+          <p className="text-gray-600 uppercase text-xs">Total Operación</p>
           <p className="text-3xl font-bold text-green-400">${totalCosto.toFixed(2)}</p>
         </div>
       </div>
@@ -438,12 +438,12 @@ const EntradaStock = () => {
       )}
 
 
-      <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-gray-700">
-        <h3 className="text-xl text-white p-6 bg-gray-900/50 border-b border-gray-700">Historial de Operaciones</h3>
-        {isLoading ? <p className="p-8 text-gray-400 text-center animate-pulse">Cargando datos...</p> : (
+      <div className="bg-white border border-gray-200 shadow-md rounded-lg shadow-xl overflow-hidden border border-gray-200">
+        <h3 className="text-xl text-gray-800 p-6 bg-gray-50/50 border-b border-gray-200">Historial de Operaciones</h3>
+        {isLoading ? <p className="p-8 text-gray-600 text-center animate-pulse">Cargando datos...</p> : (
           <div className="overflow-x-auto">
             <table className="min-w-full text-left">
-              <thead className="bg-gray-900 text-gray-300 uppercase text-xs font-semibold">
+              <thead className="bg-gray-50 text-gray-700 uppercase text-xs font-semibold">
                 <tr>
                   <th className="p-4">ID</th>
                   <th className="p-4">Tipo</th>
@@ -454,23 +454,23 @@ const EntradaStock = () => {
                   <th className="p-4 text-right">Total</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-700/50">
+              <tbody className="divide-y divide-gray-200/50">
                 {entradas.map(e => (
-                  <tr key={e.id} className="hover:bg-gray-700/50 transition-colors">
-                    <td className="p-4 text-gray-300 font-mono">#{e.id}</td>
+                  <tr key={e.id} className="hover:bg-gray-100/50 transition-colors">
+                    <td className="p-4 text-gray-700 font-mono">#{e.id}</td>
                     <td className="p-4">
                       <span className={`px-2 py-1 rounded text-xs font-bold ${e.tipo === 'COMPRA' ? 'bg-green-900 text-green-200' : 'bg-blue-900 text-blue-200'}`}>
                         {e.tipo || 'COMPRA'}
                       </span>
                     </td>
-                    <td className="p-4 text-gray-300">{new Date(e.fecha).toLocaleDateString()} {new Date(e.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
-                    <td className="p-4 text-white font-medium">
+                    <td className="p-4 text-gray-700">{new Date(e.fecha).toLocaleDateString()} {new Date(e.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                    <td className="p-4 text-gray-800 font-medium">
                       {e.tipo === 'TRANSFERENCIA'
                         ? (e.sucursal_origen_nombre || 'N/A')
                         : (e.proveedor_nombre || 'Ajuste')}
                     </td>
-                    <td className="p-4 text-gray-400">{e.factura || '-'}</td>
-                    <td className="p-4 text-gray-400 text-sm">{e.usuario_username}</td>
+                    <td className="p-4 text-gray-600">{e.factura || '-'}</td>
+                    <td className="p-4 text-gray-600 text-sm">{e.usuario_username}</td>
                     <td className="p-4 text-right text-green-400 font-bold font-mono">${e.total_costo}</td>
                   </tr>
                 ))}

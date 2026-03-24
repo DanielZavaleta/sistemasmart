@@ -117,7 +117,7 @@ const PrintableReceipt = ({ venta, onClose }) => {
         <div className="no-print p-4 bg-gray-100 flex justify-between border-t border-gray-200">
           <button
             onClick={onClose}
-            className="flex items-center bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors"
+            className="flex items-center bg-gray-50 border border-gray-100 hover:bg-gray-100 text-white font-bold py-2 px-4 rounded transition-colors"
           >
             <CloseIcon />
             <span className="ml-2">Cerrar</span>

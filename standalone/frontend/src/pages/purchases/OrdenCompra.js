@@ -112,14 +112,14 @@ const OrdenCompraForm = ({ onSave, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg mb-6">
+    <form onSubmit={handleSubmit} className="bg-white border border-gray-200 shadow-md p-6 rounded-lg mb-6">
       <h3 className="text-xl text-white mb-4">Nueva Orden de Compra</h3>
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
       {/* Encabezado */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label className="block text-gray-300 text-sm mb-1">Proveedor *</label>
+          <label className="block text-gray-700 text-sm mb-1">Proveedor *</label>
           <select
             value={proveedorId}
             onChange={e => setProveedorId(e.target.value)}
@@ -133,7 +133,7 @@ const OrdenCompraForm = ({ onSave, onCancel }) => {
           </select>
         </div>
         <div>
-          <label className="block text-gray-300 text-sm mb-1">Fecha Entrega (Opcional)</label>
+          <label className="block text-gray-700 text-sm mb-1">Fecha Entrega (Opcional)</label>
           <input
             type="date"
             value={fechaEntrega}
@@ -142,7 +142,7 @@ const OrdenCompraForm = ({ onSave, onCancel }) => {
           />
         </div>
         <div>
-          <label className="block text-gray-300 text-sm mb-1">Notas (Opcional)</label>
+          <label className="block text-gray-700 text-sm mb-1">Notas (Opcional)</label>
           <input
             type="text"
             value={notas}
@@ -155,7 +155,7 @@ const OrdenCompraForm = ({ onSave, onCancel }) => {
 
       {/* Buscador de Productos */}
       <div className="mt-6 relative">
-        <label className="block text-gray-300 text-sm mb-1">Buscar Producto</label>
+        <label className="block text-gray-700 text-sm mb-1">Buscar Producto</label>
         <input
           type="text"
           value={searchTerm}
@@ -164,7 +164,7 @@ const OrdenCompraForm = ({ onSave, onCancel }) => {
           className="p-2 bg-gray-700 rounded w-full"
         />
         {filteredProducts.length > 0 && (
-          <div className="absolute z-10 w-full bg-gray-600 rounded-b shadow-lg max-h-48 overflow-y-auto">
+          <div className="absolute z-10 w-full bg-gray-50 border border-gray-100 rounded-b shadow-lg max-h-48 overflow-y-auto">
             {filteredProducts.map(p => (
               <div
                 key={p.id}
@@ -181,7 +181,7 @@ const OrdenCompraForm = ({ onSave, onCancel }) => {
       {/* Items de la Orden */}
       <div className="mt-6 space-y-2">
         <h4 className="text-lg text-white">Productos en esta Orden</h4>
-        {items.length === 0 && <p className="text-gray-400">Agregue productos usando el buscador.</p>}
+        {items.length === 0 && <p className="text-gray-600">Agregue productos usando el buscador.</p>}
 
         {items.map((item, index) => (
           <div key={item.producto_id} className="bg-gray-700 p-2 rounded grid grid-cols-4 gap-2 items-center">
@@ -191,7 +191,7 @@ const OrdenCompraForm = ({ onSave, onCancel }) => {
               value={item.cantidad}
               onChange={e => updateItem(index, 'cantidad', e.target.value)}
               placeholder="Cantidad"
-              className="p-2 bg-gray-600 rounded w-full"
+              className="p-2 bg-gray-50 border border-gray-100 rounded w-full"
             />
             <input
               type="number"
@@ -199,7 +199,7 @@ const OrdenCompraForm = ({ onSave, onCancel }) => {
               onChange={e => updateItem(index, 'costo_unitario', e.target.value)}
               placeholder="Costo Unit."
               step="0.01"
-              className="p-2 bg-gray-600 rounded w-full"
+              className="p-2 bg-gray-50 border border-gray-100 rounded w-full"
             />
             <button type="button" onClick={() => removeItem(index)} className="text-red-500 hover:text-red-400 col-start-4">
               <TrashIcon />
@@ -209,17 +209,17 @@ const OrdenCompraForm = ({ onSave, onCancel }) => {
       </div>
 
       {/* Total y Botones */}
-      <div className="mt-6 border-t border-gray-700 pt-4 flex justify-between items-center">
+      <div className="mt-6 border-t border-gray-200 pt-4 flex justify-between items-center">
         <div>
           <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
             Guardar Orden de Compra
           </button>
-          <button type="button" onClick={onCancel} className="bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded">
+          <button type="button" onClick={onCancel} className="bg-gray-50 border border-gray-100 hover:bg-gray-500 text-gray-800 py-2 px-4 rounded">
             Cancelar
           </button>
         </div>
         <div className="text-right">
-          <p className="text-gray-400">Total de Orden:</p>
+          <p className="text-gray-600">Total de Orden:</p>
           <p className="text-2xl font-bold">${totalCosto.toFixed(2)}</p>
         </div>
       </div>
@@ -285,12 +285,12 @@ const OrdenCompra = () => {
         />
       )}
 
-      <div className="bg-gray-800 rounded shadow-md overflow-x-auto">
+      <div className="bg-white border border-gray-200 shadow-md rounded shadow-md overflow-x-auto">
         <h3 className="text-xl text-white p-4">Historial de Órdenes de Compra</h3>
-        {isLoading && <p className="p-4 text-gray-400">Cargando...</p>}
+        {isLoading && <p className="p-4 text-gray-600">Cargando...</p>}
         <table className="min-w-full text-left">
           <thead>
-            <tr className="border-b border-gray-700">
+            <tr className="border-b border-gray-200">
               <th className="p-4">ID</th>
               <th className="p-4">Fecha</th>
               <th className="p-4">Proveedor</th>
@@ -301,7 +301,7 @@ const OrdenCompra = () => {
           </thead>
           <tbody>
             {ordenes.map(o => (
-              <tr key={o.id} className="border-b border-gray-700 hover:bg-gray-700">
+              <tr key={o.id} className="border-b border-gray-200 hover:bg-gray-100">
                 <td className="p-4">OC-{o.id}</td>
                 <td className="p-4">{new Date(o.fecha_creacion).toLocaleDateString()}</td>
                 <td className="p-4">{o.proveedor_nombre || 'N/A'}</td>

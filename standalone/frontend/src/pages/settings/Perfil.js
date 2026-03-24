@@ -108,7 +108,7 @@ const Perfil = () => {
         }
     };
 
-    if (loading) return <div className="p-8 text-center text-gray-500">Cargando perfil...</div>;
+    if (loading) return <div className="p-8 text-center text-gray-700">Cargando perfil...</div>;
 
     return (
         <div className="p-6 max-w-2xl mx-auto">
@@ -128,7 +128,7 @@ const Perfil = () => {
                                 ) : currentAvatarUrl ? (
                                     <img src={currentAvatarUrl} alt="Avatar" className="w-full h-full object-cover" />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-gray-300">
+                                    <div className="w-full h-full flex items-center justify-center text-gray-700">
                                         <IconUser size={64} />
                                     </div>
                                 )}
@@ -143,7 +143,7 @@ const Perfil = () => {
                                 />
                             </label>
                         </div>
-                        <p className="text-sm text-gray-500 mt-2">Click en la cámara para cambiar imagen</p>
+                        <p className="text-sm text-gray-700 mt-2">Click en la cámara para cambiar imagen</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -175,7 +175,7 @@ const Perfil = () => {
                             type="text"
                             value={formData.username}
                             disabled
-                            className="w-full px-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed"
+                            className="w-full px-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 cursor-not-allowed"
                         />
                     </div>
 
@@ -192,7 +192,7 @@ const Perfil = () => {
 
                     <div className="pt-6 border-t border-gray-100">
                         <h4 className="text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
-                            <IconLock size={16} /> Cambiar Contraseña <span className="text-gray-400 font-normal">(Opcional)</span>
+                            <IconLock size={16} /> Cambiar Contraseña <span className="text-gray-600 font-normal">(Opcional)</span>
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>

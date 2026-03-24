@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
-    UserViewSet, GroupViewSet, ProductoViewSet, 
+    UserViewSet, GroupViewSet, PermissionViewSet, ProductoViewSet, 
     FamiliaViewSet, SubfamiliaViewSet, ClienteViewSet,
     ProveedorViewSet, VentaViewSet, AuthorizeActionView,
     VenderRecargaView, EntradaStockViewSet,
@@ -30,6 +30,7 @@ from rest_framework_simplejwt.views import (
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'groups', GroupViewSet)
+router.register(r'permissions', PermissionViewSet)
 router.register(r'productos', ProductoViewSet)
 router.register(r'familias', FamiliaViewSet)
 router.register(r'subfamilias', SubfamiliaViewSet)

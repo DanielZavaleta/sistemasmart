@@ -47,7 +47,7 @@ const ClienteForm = ({ selectedCliente, onSave, onCancel }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-gray-800 p-4 rounded mb-4">
+        <form onSubmit={handleSubmit} className="bg-white border border-gray-200 shadow-md p-4 rounded mb-4">
             <h3 className="text-xl text-white mb-4">{selectedCliente ? 'Editar' : 'Crear'} Cliente</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -57,7 +57,7 @@ const ClienteForm = ({ selectedCliente, onSave, onCancel }) => {
                 <input name="email" value={cliente.email} onChange={handleChange} placeholder="Email (Opcional)" type="email" className="p-2 bg-gray-700 rounded" />
                 <input name="telefono" value={cliente.telefono} onChange={handleChange} placeholder="Teléfono (Opcional)" className="p-2 bg-gray-700 rounded" />
                 <div className="flex flex-col">
-                    <label className="text-gray-400 text-xs mb-1">Límite de Crédito</label>
+                    <label className="text-gray-600 text-xs mb-1">Límite de Crédito</label>
                     <input type="number" step="0.01" name="limite_credito" value={cliente.limite_credito} onChange={handleChange} className="p-2 bg-gray-700 rounded" />
                 </div>
                 <textarea name="direccion" value={cliente.direccion} onChange={handleChange} placeholder="Dirección Fiscal (Calle, No, Col, Ciudad)" className="p-2 bg-gray-700 rounded md:col-span-2" rows="2"></textarea>
@@ -84,7 +84,7 @@ const ClienteForm = ({ selectedCliente, onSave, onCancel }) => {
                 </select>
 
                 <div className="flex flex-col">
-                    <label className="text-gray-400 text-xs mb-1">Descuento Automático</label>
+                    <label className="text-gray-600 text-xs mb-1">Descuento Automático</label>
                     <select name="descuento_id" value={cliente.descuento_id || ''} onChange={handleChange} className="p-2 bg-gray-700 rounded">
                         <option value="">-- Ninguno --</option>
                         {descuentos.map(d => (
@@ -97,7 +97,7 @@ const ClienteForm = ({ selectedCliente, onSave, onCancel }) => {
 
             <div className="mt-6">
                 <button type="submit" className="bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded mr-2">Guardar</button>
-                <button type="button" onClick={onCancel} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancelar</button>
+                <button type="button" onClick={onCancel} className="bg-gray-500 hover:bg-gray-100 text-gray-800 font-bold py-2 px-4 rounded">Cancelar</button>
             </div>
         </form>
     );
@@ -167,10 +167,10 @@ const ClienteManagement = () => {
                 <ClienteForm selectedCliente={selectedCliente} onSave={handleSave} onCancel={() => { setShowForm(false); setSelectedCliente(null); }} />
             )}
 
-            <div className="bg-gray-800 rounded shadow-md overflow-x-auto">
+            <div className="bg-white border border-gray-200 shadow-md rounded shadow-md overflow-x-auto">
                 <table className="min-w-full text-left">
                     <thead>
-                        <tr className="border-b border-gray-700">
+                        <tr className="border-b border-gray-200">
                             <th className="p-4">RFC</th>
                             <th className="p-4">Razón Social</th>
                             <th className="p-4">Nombre Comercial</th>
@@ -184,7 +184,7 @@ const ClienteManagement = () => {
                     </thead>
                     <tbody>
                         {clientes.map(c => (
-                            <tr key={c.id} className="border-b border-gray-700 hover:bg-gray-700">
+                            <tr key={c.id} className="border-b border-gray-200 hover:bg-gray-100">
                                 <td className="p-4">{c.rfc}</td>
                                 <td className="p-4">{c.razon_social}</td>
                                 <td className="p-4">{c.nombre_comercial}</td>

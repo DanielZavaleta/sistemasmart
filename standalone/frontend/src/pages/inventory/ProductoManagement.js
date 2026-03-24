@@ -270,9 +270,9 @@ const ProductoForm = ({ selectedProducto, onSave, onCancel, catalog = [] }) => {
             <h2 className="text-2xl font-bold text-gray-800">
               {selectedProducto ? 'Editar Producto' : 'Nuevo Producto'}
             </h2>
-            <p className="text-sm text-gray-500 mt-1">Complete la información del inventario y facturación.</p>
+            <p className="text-sm text-gray-700 mt-1">Complete la información del inventario y facturación.</p>
           </div>
-          <button onClick={onCancel} className="text-gray-400 hover:text-gray-600 transition-colors">
+          <button onClick={onCancel} className="text-gray-600 hover:text-gray-600 transition-colors">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
@@ -466,7 +466,7 @@ const ProductoForm = ({ selectedProducto, onSave, onCancel, catalog = [] }) => {
                   </div>
 
                   <div className="bg-gray-50 rounded-lg p-3 space-y-2">
-                    {producto.componentes.length === 0 && <p className="text-sm text-gray-400 text-center py-2">No hay componentes agregados.</p>}
+                    {producto.componentes.length === 0 && <p className="text-sm text-gray-600 text-center py-2">No hay componentes agregados.</p>}
                     {producto.componentes.map((comp, idx) => (
                       <div key={idx} className="flex justify-between items-center bg-white p-2 rounded border border-gray-200 shadow-sm">
                         <span className="text-sm font-medium text-gray-700 w-1/2 truncate">{comp.nombre || 'Producto ' + comp.componente}</span>
@@ -497,9 +497,9 @@ const ProductoForm = ({ selectedProducto, onSave, onCancel, catalog = [] }) => {
                 {/* Cost Row */}
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <div>
-                    <label className="block text-xs uppercase text-gray-500 font-bold mb-1">Costo Neto</label>
+                    <label className="block text-xs uppercase text-gray-700 font-bold mb-1">Costo Neto</label>
                     <div className="relative">
-                      <span className="absolute left-3 top-2 text-gray-500">$</span>
+                      <span className="absolute left-3 top-2 text-gray-700">$</span>
                       <input
                         type="number" step="0.01"
                         name="costo"
@@ -510,7 +510,7 @@ const ProductoForm = ({ selectedProducto, onSave, onCancel, catalog = [] }) => {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs uppercase text-gray-500 font-bold mb-1">IVA %</label>
+                    <label className="block text-xs uppercase text-gray-700 font-bold mb-1">IVA %</label>
                     <select name="tasa_iva" value={producto.tasa_iva} onChange={handleChange} className="w-full rounded-md border-gray-300 text-sm">
                       <option value="0.16">16%</option>
                       <option value="0.08">8%</option>
@@ -518,7 +518,7 @@ const ProductoForm = ({ selectedProducto, onSave, onCancel, catalog = [] }) => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs uppercase text-gray-500 font-bold mb-1">IEPS %</label>
+                    <label className="block text-xs uppercase text-gray-700 font-bold mb-1">IEPS %</label>
                     <input
                       type="number" step="0.01"
                       name="tasa_ieps"
@@ -528,7 +528,7 @@ const ProductoForm = ({ selectedProducto, onSave, onCancel, catalog = [] }) => {
                     />
                   </div>
                   <div className="flex flex-col justify-center items-end">
-                    <span className="text-xs uppercase text-gray-400 font-bold">Costo Final</span>
+                    <span className="text-xs uppercase text-gray-600 font-bold">Costo Final</span>
                     <span className="text-xl font-bold text-green-700">${getCostoNeto()}</span>
                   </div>
                 </div>
@@ -537,10 +537,10 @@ const ProductoForm = ({ selectedProducto, onSave, onCancel, catalog = [] }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[1, 2, 3, 4, 5, 6].map(n => (
                     <div key={n} className="bg-white border rounded-lg p-3 relative hover:shadow-md transition-shadow group">
-                      <span className="absolute top-2 right-2 text-[10px] font-bold text-gray-300 group-hover:text-blue-400">Precio {n}</span>
-                      <label className="block text-xs text-gray-500 mb-1">Precio Venta</label>
+                      <span className="absolute top-2 right-2 text-[10px] font-bold text-gray-700 group-hover:text-blue-400">Precio {n}</span>
+                      <label className="block text-xs text-gray-700 mb-1">Precio Venta</label>
                       <div className="relative mb-2">
-                        <span className="absolute left-2 top-1.5 text-gray-400 text-sm">$</span>
+                        <span className="absolute left-2 top-1.5 text-gray-600 text-sm">$</span>
                         <input
                           type="number" step="0.01"
                           name={`precio_${n}`}
@@ -550,7 +550,7 @@ const ProductoForm = ({ selectedProducto, onSave, onCancel, catalog = [] }) => {
                         />
                       </div>
                       <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-400">Ganancia:</span>
+                        <span className="text-gray-600">Ganancia:</span>
                         <span className={`font-medium ${parseFloat(calculateGanancia(producto[`precio_${n}`], producto.costo)) < 20 ? 'text-red-500' : 'text-green-600'}`}>
                           {calculateGanancia(producto[`precio_${n}`], producto.costo)}%
                         </span>
@@ -572,25 +572,25 @@ const ProductoForm = ({ selectedProducto, onSave, onCancel, catalog = [] }) => {
                   {imagePreview ? (
                     <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-gray-400 text-4xl">📷</span>
+                    <span className="text-gray-600 text-4xl">📷</span>
                   )}
                   <input type="file" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" />
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                     <span className="text-sm font-medium">Cambiar</span>
                   </div>
                 </div>
-                <p className="text-xs text-gray-400">Haga clic para subir una imagen (JPG, PNG)</p>
+                <p className="text-xs text-gray-600">Haga clic para subir una imagen (JPG, PNG)</p>
               </div>
 
               {/* Section: SAT Details */}
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <span className="text-gray-400 text-sm">🏛️</span>
+                  <span className="text-gray-600 text-sm">🏛️</span>
                   Detalles SAT
                 </h3>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs uppercase text-gray-500 font-bold mb-1">Clave Prod/Serv</label>
+                    <label className="block text-xs uppercase text-gray-700 font-bold mb-1">Clave Prod/Serv</label>
                     <input
                       name="clave_sat_producto"
                       value={producto.clave_sat_producto}
@@ -598,10 +598,10 @@ const ProductoForm = ({ selectedProducto, onSave, onCancel, catalog = [] }) => {
                       className="w-full rounded-md border-gray-300 text-sm"
                       placeholder="01010101"
                     />
-                    <p className="text-[10px] text-gray-400 mt-1">Clave del catálogo del SAT</p>
+                    <p className="text-[10px] text-gray-600 mt-1">Clave del catálogo del SAT</p>
                   </div>
                   <div>
-                    <label className="block text-xs uppercase text-gray-500 font-bold mb-1">Objeto Impuesto</label>
+                    <label className="block text-xs uppercase text-gray-700 font-bold mb-1">Objeto Impuesto</label>
                     <select
                       name="objeto_impuesto"
                       value={producto.objeto_impuesto}
@@ -614,7 +614,7 @@ const ProductoForm = ({ selectedProducto, onSave, onCancel, catalog = [] }) => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs uppercase text-gray-500 font-bold mb-1">No. Identificación</label>
+                    <label className="block text-xs uppercase text-gray-700 font-bold mb-1">No. Identificación</label>
                     <input
                       name="numero_identificacion"
                       value={producto.numero_identificacion}
@@ -740,7 +740,7 @@ const ProductoManagement = () => {
       <div className="w-64 bg-white shadow-xl z-0 flex flex-col border-r border-gray-100 hidden md:flex">
         <div className="p-6 border-b border-gray-100">
           <h1 className="text-xl font-black text-blue-600 tracking-tight">Inventario</h1>
-          <p className="text-xs text-gray-400 mt-1">Gestión de Catálogo</p>
+          <p className="text-xs text-gray-600 mt-1">Gestión de Catálogo</p>
         </div>
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           <button
@@ -793,7 +793,7 @@ const ProductoManagement = () => {
           <h2 className="text-xl font-bold text-gray-800">Catálogo de Productos</h2>
           <div className="flex items-center gap-4">
             <div className="bg-gray-100 rounded-lg px-3 py-1.5 flex items-center gap-2">
-              <span className="text-gray-400">🔍</span>
+              <span className="text-gray-600">🔍</span>
               <input
                 type="text"
                 placeholder="Buscar producto..."
@@ -825,11 +825,11 @@ const ProductoManagement = () => {
             <table className="w-full text-left">
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
-                  <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Producto</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Categoría</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Existencias</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Precio Público</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Acciones</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-gray-700 uppercase tracking-wider">Producto</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-gray-700 uppercase tracking-wider">Categoría</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-gray-700 uppercase tracking-wider text-right">Existencias</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-gray-700 uppercase tracking-wider text-right">Precio Público</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-gray-700 uppercase tracking-wider text-right">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -837,18 +837,18 @@ const ProductoManagement = () => {
                   <tr key={p.id} className="hover:bg-blue-50/50 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-xl text-gray-400 shrink-0">
+                        <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-xl text-gray-600 shrink-0">
                           {p.imagen ? <img src={p.imagen} className="w-full h-full object-cover rounded-lg" alt="" /> : '📦'}
                         </div>
                         <div>
                           <p className="text-sm font-medium text-gray-900">{p.descripcion}</p>
-                          <p className="text-xs text-gray-500 font-mono">{p.codigo_barras}</p>
+                          <p className="text-xs text-gray-700 font-mono">{p.codigo_barras}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
                       {(p.subfamilia?.familia_nombre) || 'General'}
-                      <span className="text-gray-400 mx-1">›</span>
+                      <span className="text-gray-600 mx-1">›</span>
                       {(p.subfamilia?.nombre) || 'General'}
                     </td>
                     <td className="px-6 py-4 text-right">
@@ -865,14 +865,14 @@ const ProductoManagement = () => {
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => handleEdit(p)}
-                          className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          className="p-1.5 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                           title="Editar"
                         >
                           ✏️
                         </button>
                         <button
                           onClick={() => handleDelete(p.id)}
-                          className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                           title="Eliminar"
                         >
                           🗑️
@@ -883,7 +883,7 @@ const ProductoManagement = () => {
                 ))}
                 {filteredProductos.length === 0 && (
                   <tr>
-                    <td colSpan="5" className="px-6 py-12 text-center text-gray-400">
+                    <td colSpan="5" className="px-6 py-12 text-center text-gray-600">
                       No se encontraron productos que coincidan con la búsqueda.
                     </td>
                   </tr>

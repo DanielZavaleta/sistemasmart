@@ -30,7 +30,7 @@ const ProveedorForm = ({ selectedProveedor, onSave, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-gray-800 p-4 rounded mb-4">
+    <form onSubmit={handleSubmit} className="bg-white border border-gray-200 shadow-md p-4 rounded mb-4">
       <h3 className="text-xl text-white mb-4">{selectedProveedor ? 'Editar' : 'Crear'} Proveedor</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -43,7 +43,7 @@ const ProveedorForm = ({ selectedProveedor, onSave, onCancel }) => {
 
       <div className="mt-6">
         <button type="submit" className="bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded mr-2">Guardar</button>
-        <button type="button" onClick={onCancel} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancelar</button>
+        <button type="button" onClick={onCancel} className="bg-gray-500 hover:bg-gray-100 text-gray-800 font-bold py-2 px-4 rounded">Cancelar</button>
       </div>
     </form>
   );
@@ -113,10 +113,10 @@ const ProveedorManagement = () => {
         <ProveedorForm selectedProveedor={selectedProveedor} onSave={handleSave} onCancel={() => { setShowForm(false); setSelectedProveedor(null); }} />
       )}
 
-      <div className="bg-gray-800 rounded shadow-md overflow-x-auto">
+      <div className="bg-white border border-gray-200 shadow-md rounded shadow-md overflow-x-auto">
         <table className="min-w-full text-left">
           <thead>
-            <tr className="border-b border-gray-700">
+            <tr className="border-b border-gray-200">
               <th className="p-4">RFC</th>
               <th className="p-4">Razón Social</th>
               <th className="p-4">Nombre Comercial</th>
@@ -127,7 +127,7 @@ const ProveedorManagement = () => {
           </thead>
           <tbody>
             {proveedores.map(p => (
-              <tr key={p.id} className="border-b border-gray-700 hover:bg-gray-700">
+              <tr key={p.id} className="border-b border-gray-200 hover:bg-gray-100">
                 <td className="p-4">{p.rfc}</td>
                 <td className="p-4">{p.razon_social}</td>
                 <td className="p-4">{p.nombre_comercial}</td>

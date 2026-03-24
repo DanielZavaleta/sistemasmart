@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from rest_framework import generics
@@ -8,12 +8,13 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db import transaction
+from .permissions import HasAtomicPermission
 
 from .models import (
     Configuracion
 )
 from .serializers import (
-    UserSerializer, GroupSerializer, ProductoSerializer, 
+    UserSerializer, GroupSerializer, PermissionSerializer, ProductoSerializer, 
     FamiliaSerializer, SubfamiliaSerializer, ClienteSerializer,
     ProveedorSerializer, VentaSerializer,
     EntradaStockSerializer, AjusteStockSerializer,
@@ -29,7 +30,7 @@ from .serializers import (
 class ConfiguracionViewSet(viewsets.ModelViewSet):
     queryset = Configuracion.objects.all()
     serializer_class = ConfiguracionSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
     
     def list(self, request, *args, **kwargs):
         # Always return the first/only instance for easier usage
@@ -171,7 +172,13 @@ from .models import (
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
+
+    @action(detail=False, methods=['get'])
+    def me(self, request):
+        from rest_framework.response import Response
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
 
 
 
@@ -180,20 +187,26 @@ class UserViewSet(viewsets.ModelViewSet):
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
+
+
+class PermissionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Permission.objects.filter(content_type__app_label='api').order_by('codename')
+    serializer_class = PermissionSerializer
+    permission_classes = [HasAtomicPermission]
 
 
 
 class SucursalViewSet(viewsets.ModelViewSet):
     queryset = Sucursal.objects.all()
     serializer_class = SucursalSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
 
 class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
     @action(detail=False, methods=['get'], url_path='reporte-existencias')
     def reporte_existencias(self, request):
@@ -224,38 +237,38 @@ class ProductoViewSet(viewsets.ModelViewSet):
 class FamiliaViewSet(viewsets.ModelViewSet):
     queryset = Familia.objects.all()
     serializer_class = FamiliaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
 
 class SubfamiliaViewSet(viewsets.ModelViewSet):
     queryset = Subfamilia.objects.all()
     serializer_class = SubfamiliaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
 
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
 
 class DescuentoViewSet(viewsets.ModelViewSet):
     queryset = Descuento.objects.all().order_by('porcentaje')
     serializer_class = DescuentoSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
 
 
 class ProveedorViewSet(viewsets.ModelViewSet):
     queryset = Proveedor.objects.all()
     serializer_class = ProveedorSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
 
 class VentaViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Venta.objects.all().order_by('-creado_en')
     serializer_class = VentaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
     
     @action(detail=False, methods=['post'], url_path='registrar')
     def registrar_venta(self, request):
@@ -268,7 +281,11 @@ class VentaViewSet(viewsets.ReadOnlyModelViewSet):
         
         try:
             with transaction.atomic():
-                venta = Venta.objects.create(cajero=request.user, total=total_venta)
+                sucursal = request.user.perfil.sucursal if hasattr(request.user, 'perfil') else None
+                if not sucursal:
+                    raise Exception("El usuario no tiene una sucursal asignada para registrar ventas.")
+                
+                venta = Venta.objects.create(cajero=request.user, sucursal=sucursal, total=total_venta)
                 cliente = None
                 cliente_id_param = data.get('cliente') or data.get('cliente_id') # Support both
                 if cliente_id_param:
@@ -278,7 +295,13 @@ class VentaViewSet(viewsets.ReadOnlyModelViewSet):
 
 
                 def deduct_fifo(prod, qty):
-                    # 1. Master Update (Allow negative stock as per Spec)
+                    # 1. Update Inventario (Branch specific)
+                    from .models import Inventario
+                    inv, created = Inventario.objects.get_or_create(sucursal=sucursal, producto=prod, defaults={'cantidad': 0})
+                    inv.cantidad -= qty
+                    inv.save()
+
+                    # 2. Master Update (Allow negative stock as per Spec)
                     prod.stock_actual -= qty
                     prod.save()
 
@@ -337,13 +360,12 @@ class VentaViewSet(viewsets.ReadOnlyModelViewSet):
                              to_check_cliente = venta.cliente
 
                         # HU-30: Validar Límite de Crédito
-                        nuevo_saldo = to_check_cliente.saldo_actual + monto
-                        if to_check_cliente.limite_credito > 0 and nuevo_saldo > to_check_cliente.limite_credito:
-                            raise Exception(f"El cliente excede su límite de crédito. Saldo: ${to_check_cliente.saldo_actual}, Límite: ${to_check_cliente.limite_credito}, Venta: ${monto}")
-
-                        to_check_cliente.saldo_actual = nuevo_saldo
+                        if to_check_cliente.credito_disponible < monto:
+                            raise Exception(f"Crédito insuficiente. Disponible: ${to_check_cliente.credito_disponible}, Requerido: ${monto}")
+                        
+                        to_check_cliente.credito_disponible -= monto
                         to_check_cliente.save()
-                        MovimientoCliente.objects.create(cliente=to_check_cliente, tipo='cargo', monto=monto, venta=venta, notas=f"Cargo por Venta {venta.id}")
+                        MovimientoCliente.objects.create(cliente=to_check_cliente, tipo='cargo', monto=monto, notas=f"Cargo por Venta {venta.id}")
                     else:
                         # Si hay cliente, registrar la venta como movimiento? 
                         # El spec dice: "Si es Credito o Anticipo insertar movimiento".
@@ -436,7 +458,7 @@ class VentaViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class AuthorizeActionView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
     def post(self, request, *args, **kwargs):
         username = request.data.get('username')
         password = request.data.get('password')
@@ -457,7 +479,7 @@ class AuthorizeActionView(APIView):
 
 
 class VenderRecargaView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
     def post(self, request, *args, **kwargs):
         numero = request.data.get('numero')
         monto = request.data.get('monto')
@@ -487,7 +509,7 @@ class VenderRecargaView(APIView):
 class EntradaStockViewSet(viewsets.ModelViewSet):
     queryset = EntradaStock.objects.all().order_by('-fecha')
     serializer_class = EntradaStockSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
     def get_serializer_context(self):
         return {'request': self.request}
 
@@ -495,7 +517,7 @@ class EntradaStockViewSet(viewsets.ModelViewSet):
 class AjusteStockViewSet(viewsets.ModelViewSet):
     queryset = AjusteStock.objects.all().order_by('-fecha')
     serializer_class = AjusteStockSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
     http_method_names = ['get', 'post', 'head', 'options']
     def get_serializer_context(self):
         return {'request': self.request}
@@ -503,7 +525,7 @@ class AjusteStockViewSet(viewsets.ModelViewSet):
 
 class CaducidadAlertView(generics.ListAPIView):
     serializer_class = CaducidadSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
     def get_queryset(self):
         today = datetime.date.today()
         try:
@@ -525,7 +547,7 @@ class OrdenCompraViewSet(viewsets.ModelViewSet):
     """
     queryset = OrdenCompra.objects.all().order_by('-fecha_creacion')
     serializer_class = OrdenCompraSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
     def get_serializer_context(self):
         
@@ -535,7 +557,7 @@ class OrdenCompraViewSet(viewsets.ModelViewSet):
 class PagoProveedorViewSet(viewsets.ModelViewSet):
     queryset = PagoProveedor.objects.all().order_by('-fecha')
     serializer_class = PagoProveedorSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
     def get_serializer_context(self):
         return {'request': self.request}
@@ -544,7 +566,7 @@ class PagoProveedorViewSet(viewsets.ModelViewSet):
 class MovimientoClienteViewSet(viewsets.ModelViewSet):
     queryset = MovimientoCliente.objects.all().order_by('-fecha')
     serializer_class = MovimientoClienteSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -574,9 +596,7 @@ class MovimientoClienteViewSet(viewsets.ModelViewSet):
                 # Actualizar saldo del cliente
                 cliente = movimiento.cliente
                 if movimiento.tipo == 'abono':
-                    cliente.saldo_actual -= movimiento.monto
-                # (Si fuera cargo manual, se sumaría, pero por ahora solo abonos manuales)
-                
+                    cliente.credito_disponible += movimiento.monto
                 cliente.save()
                 
                 headers = self.get_success_headers(serializer.data)
@@ -588,7 +608,7 @@ class MovimientoClienteViewSet(viewsets.ModelViewSet):
 class CorteCajaViewSet(viewsets.ModelViewSet):
     queryset = CorteCaja.objects.all().order_by('-fecha')
     serializer_class = CorteCajaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -612,8 +632,11 @@ class CorteCajaViewSet(viewsets.ModelViewSet):
 
         # Filter by current user (Cajero)
         user = request.user
+        sucursal = user.perfil.sucursal if hasattr(user, 'perfil') else None
         
         ventas_hoy = Venta.objects.filter(creado_en__range=(today_start, today_end), cajero=user)
+        if sucursal:
+             ventas_hoy = ventas_hoy.filter(sucursal=sucursal)
         
         total_ventas = ventas_hoy.aggregate(Sum('total'))['total__sum'] or 0
         
@@ -630,6 +653,8 @@ class CorteCajaViewSet(viewsets.ModelViewSet):
         
         # Restar Retiros de Caja (HU-17) - Filter by user
         retiros_hoy = RetiroCaja.objects.filter(fecha__range=(today_start, today_end), usuario=user)
+        if sucursal:
+             retiros_hoy = retiros_hoy.filter(sucursal=sucursal)
         total_retiros = retiros_hoy.aggregate(Sum('monto'))['monto__sum'] or 0
 
         # Abonos - Filter by user
@@ -679,7 +704,7 @@ class CorteCajaViewSet(viewsets.ModelViewSet):
 class RetiroCajaViewSet(viewsets.ModelViewSet):
     queryset = RetiroCaja.objects.all().order_by('-fecha')
     serializer_class = RetiroCajaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
@@ -688,14 +713,14 @@ class RetiroCajaViewSet(viewsets.ModelViewSet):
 class TicketSuspendidoViewSet(viewsets.ModelViewSet):
     queryset = TicketSuspendido.objects.all().order_by('-creado_en')
     serializer_class = TicketSuspendidoSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
 
 
 class ExportarInventarioView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
     def get(self, request):
         # Crear libro de Excel
@@ -734,7 +759,7 @@ class ExportarInventarioView(APIView):
 class RetiroCajaViewSet(viewsets.ModelViewSet):
     queryset = RetiroCaja.objects.all().order_by('-fecha')
     serializer_class = RetiroCajaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
@@ -743,7 +768,7 @@ class RetiroCajaViewSet(viewsets.ModelViewSet):
 class InventarioViewSet(viewsets.ModelViewSet):
     queryset = Inventario.objects.all()
     serializer_class = InventarioSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
     
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -761,7 +786,7 @@ class InventarioViewSet(viewsets.ModelViewSet):
 class TransferenciaViewSet(viewsets.ModelViewSet):
     queryset = Transferencia.objects.all().order_by('-fecha_creacion')
     serializer_class = TransferenciaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [HasAtomicPermission]
 
     def create(self, request, *args, **kwargs):
         # Custom create logic with transaction
